@@ -970,49 +970,51 @@ export default function App() {
     </div>
   );
 
-  const cyclesAndTabsControl = (
-    <>
-      {activeTab === 'calendar' && (
-        <button
-          type="button"
-          onClick={() => setShowCycles(v => !v)}
-          className="flex items-center gap-2 px-2 py-1 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
-          title="Show or hide academic cycles on the calendar"
-        >
-          <span className={`w-9 h-5 rounded-full p-0.5 flex items-center transition-colors ${showCycles ? 'bg-indigo-600 justify-end' : 'bg-slate-300 justify-start'}`}>
-            <span className="w-4 h-4 bg-white rounded-full shadow-sm" />
-          </span>
-          <span className="hidden sm:inline">Cycles</span>
-        </button>
-      )}
+  const cyclesToggleControl = activeTab === 'calendar' && (
+    <button
+      type="button"
+      onClick={() => setShowCycles(v => !v)}
+      className="flex items-center gap-2 px-2 py-1 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
+      title="Show or hide academic cycles on the calendar"
+    >
+      <span className={`w-9 h-5 rounded-full p-0.5 flex items-center transition-colors ${showCycles ? 'bg-indigo-600 justify-end' : 'bg-slate-300 justify-start'}`}>
+        <span className="w-4 h-4 bg-white rounded-full shadow-sm" />
+      </span>
+      <span className="hidden sm:inline">Cycles</span>
+    </button>
+  );
 
-      <div className="flex items-center bg-slate-100 p-1 rounded-md border border-slate-200">
-        <button onClick={() => { setActiveTab('calendar'); setSelectedDayDetails(null); }} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-          <CalendarIcon className="w-5 h-5 md:w-4 md:h-4" />
-          <span className="hidden md:inline">Calendar</span>
-        </button>
-        <button onClick={() => setActiveTab('tasks')} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'tasks' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-          <CheckSquareIcon className="w-5 h-5 md:w-4 md:h-4" />
-          <span className="hidden md:inline">Tasks</span>
-        </button>
-        <button onClick={() => setActiveTab('schedule')} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-lg text-xs md:text-sm font-semibold transition ${activeTab === 'schedule' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-          <ClockIcon className="w-5 h-5 md:w-4 md:h-4" />
-          <span className="hidden md:inline">Schedule</span>
-        </button>
-      </div>
-    </>
+  const tabsGroupControl = (
+    <div className="flex items-center bg-slate-100 p-1 rounded-md border border-slate-200">
+      <button onClick={() => { setActiveTab('calendar'); setSelectedDayDetails(null); }} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+        <CalendarIcon className="w-6 h-6 md:w-4 md:h-4" />
+        <span className="hidden md:inline">Calendar</span>
+      </button>
+      <button onClick={() => setActiveTab('tasks')} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'tasks' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+        <CheckSquareIcon className="w-6 h-6 md:w-4 md:h-4" />
+        <span className="hidden md:inline">Tasks</span>
+      </button>
+      <button onClick={() => setActiveTab('schedule')} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-lg text-xs md:text-sm font-semibold transition ${activeTab === 'schedule' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+        <ClockIcon className="w-6 h-6 md:w-4 md:h-4" />
+        <span className="hidden md:inline">Schedule</span>
+      </button>
+    </div>
   );
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8">
       <header className="max-w-7xl mx-auto mb-6 bg-white p-4 md:p-5 rounded-lg border border-slate-200 shadow-sm">
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
-          <div className="hidden md:flex md:justify-start">
-            {monthPickerControl}
+          <div className="flex justify-start">
+            <div className="md:hidden">{cyclesToggleControl}</div>
+            <div className="hidden md:flex">{monthPickerControl}</div>
           </div>
 
-          <div className="flex justify-center items-center gap-3">
-            {cyclesAndTabsControl}
+          <div className="relative flex justify-center">
+            <div className="hidden md:block absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap">
+              {cyclesToggleControl}
+            </div>
+            {tabsGroupControl}
           </div>
 
           <div className="flex justify-end">
