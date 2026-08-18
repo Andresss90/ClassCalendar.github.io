@@ -905,109 +905,127 @@ export default function App() {
     .filter((e): e is GeneralEventDefault & { isOverridden: boolean } => e !== null)
     .sort((a, b) => a.dateStr.localeCompare(b.dateStr));
 
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8">
-      <header className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 bg-white p-4 md:p-5 rounded-lg border border-slate-200 shadow-sm">
-        <div className="w-full flex items-center justify-between md:w-auto md:contents">
-          <div className="relative">
-            <button
-              type="button"
-              onClick={openMonthPicker}
-              className="flex items-center gap-1.5 text-xl md:text-2xl font-bold text-slate-900 capitalize"
-            >
-              {monthName}
-              <ChevronDownIcon />
-            </button>
-            {showMonthPicker && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setShowMonthPicker(false)} />
-                <div className="absolute top-full left-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-3 z-50 w-64">
-                  <div className="flex items-center justify-between mb-2">
-                    <button type="button" onClick={() => setPickerYear(y => y - 1)} className="p-1 hover:bg-slate-100 rounded text-slate-600"><ChevronLeftIcon /></button>
-                    <span className="text-sm font-bold text-slate-800">{pickerYear}</span>
-                    <button type="button" onClick={() => setPickerYear(y => y + 1)} className="p-1 hover:bg-slate-100 rounded text-slate-600"><ChevronRightIcon /></button>
-                  </div>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {Array.from({ length: 12 }).map((_, idx) => {
-                      const isCurrentSelection = pickerYear === year && idx === month;
-                      return (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => selectMonth(idx)}
-                          className={`px-2 py-1.5 rounded-md text-xs font-semibold transition ${isCurrentSelection ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-                        >
-                          {new Date(2000, idx, 1).toLocaleDateString('en-US', { month: 'short' })}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowUserMenu(v => !v)}
-              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition shrink-0"
-              title={userProfile.name}
-            >
-              <UserIcon />
-            </button>
-            {showUserMenu && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
-                <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-4 z-50 w-56">
-                  <div className="mb-3">
-                    <span className="text-sm font-bold block text-slate-800">{userProfile.name} ({activeCourse})</span>
-                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{userProfile.role}</span>
-                  </div>
-                  <button onClick={handleLogout} className="w-full px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-md transition">Sign Out</button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:flex md:w-auto md:gap-3">
-          <div className="flex justify-start md:contents">
-            {activeTab === 'calendar' && (
-              <button
-                type="button"
-                onClick={() => setShowCycles(v => !v)}
-                className="flex items-center gap-2 px-2 py-1 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
-                title="Show or hide academic cycles on the calendar"
-              >
-                <span className={`w-9 h-5 rounded-full p-0.5 flex items-center transition-colors ${showCycles ? 'bg-indigo-600 justify-end' : 'bg-slate-300 justify-start'}`}>
-                  <span className="w-4 h-4 bg-white rounded-full shadow-sm" />
-                </span>
-                <span className="hidden sm:inline">Cycles</span>
-              </button>
-            )}
-          </div>
-
-          <div className="flex justify-center md:contents">
-            <div className="flex items-center bg-slate-100 p-1 rounded-md border border-slate-200">
-              <button onClick={() => { setActiveTab('calendar'); setSelectedDayDetails(null); }} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-                <CalendarIcon className="w-5 h-5 md:w-4 md:h-4" />
-                <span className="hidden md:inline">Calendar</span>
-              </button>
-              <button onClick={() => setActiveTab('tasks')} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'tasks' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-                <CheckSquareIcon className="w-5 h-5 md:w-4 md:h-4" />
-                <span className="hidden md:inline">Tasks</span>
-              </button>
-              <button onClick={() => setActiveTab('schedule')} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-lg text-xs md:text-sm font-semibold transition ${activeTab === 'schedule' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-                <ClockIcon className="w-5 h-5 md:w-4 md:h-4" />
-                <span className="hidden md:inline">Schedule</span>
-              </button>
+  const monthPickerControl = (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={openMonthPicker}
+        className="flex items-center gap-1.5 text-xl md:text-2xl font-bold text-slate-900 capitalize"
+      >
+        {monthName}
+        <ChevronDownIcon />
+      </button>
+      {showMonthPicker && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setShowMonthPicker(false)} />
+          <div className="absolute top-full left-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-3 z-50 w-64">
+            <div className="flex items-center justify-between mb-2">
+              <button type="button" onClick={() => setPickerYear(y => y - 1)} className="p-1 hover:bg-slate-100 rounded text-slate-600"><ChevronLeftIcon /></button>
+              <span className="text-sm font-bold text-slate-800">{pickerYear}</span>
+              <button type="button" onClick={() => setPickerYear(y => y + 1)} className="p-1 hover:bg-slate-100 rounded text-slate-600"><ChevronRightIcon /></button>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5">
+              {Array.from({ length: 12 }).map((_, idx) => {
+                const isCurrentSelection = pickerYear === year && idx === month;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => selectMonth(idx)}
+                    className={`px-2 py-1.5 rounded-md text-xs font-semibold transition ${isCurrentSelection ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+                  >
+                    {new Date(2000, idx, 1).toLocaleDateString('en-US', { month: 'short' })}
+                  </button>
+                );
+              })}
             </div>
           </div>
+        </>
+      )}
+    </div>
+  );
 
-          <div className="md:hidden" />
+  const userMenuControl = (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setShowUserMenu(v => !v)}
+        className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition shrink-0"
+        title={userProfile.name}
+      >
+        <UserIcon />
+      </button>
+      {showUserMenu && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
+          <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-4 z-50 w-56">
+            <div className="mb-3">
+              <span className="text-sm font-bold block text-slate-800">{userProfile.name} ({activeCourse})</span>
+              <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{userProfile.role}</span>
+            </div>
+            <button onClick={handleLogout} className="w-full px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-md transition">Sign Out</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  const cyclesAndTabsControl = (
+    <>
+      {activeTab === 'calendar' && (
+        <button
+          type="button"
+          onClick={() => setShowCycles(v => !v)}
+          className="flex items-center gap-2 px-2 py-1 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
+          title="Show or hide academic cycles on the calendar"
+        >
+          <span className={`w-9 h-5 rounded-full p-0.5 flex items-center transition-colors ${showCycles ? 'bg-indigo-600 justify-end' : 'bg-slate-300 justify-start'}`}>
+            <span className="w-4 h-4 bg-white rounded-full shadow-sm" />
+          </span>
+          <span className="hidden sm:inline">Cycles</span>
+        </button>
+      )}
+
+      <div className="flex items-center bg-slate-100 p-1 rounded-md border border-slate-200">
+        <button onClick={() => { setActiveTab('calendar'); setSelectedDayDetails(null); }} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+          <CalendarIcon className="w-5 h-5 md:w-4 md:h-4" />
+          <span className="hidden md:inline">Calendar</span>
+        </button>
+        <button onClick={() => setActiveTab('tasks')} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'tasks' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+          <CheckSquareIcon className="w-5 h-5 md:w-4 md:h-4" />
+          <span className="hidden md:inline">Tasks</span>
+        </button>
+        <button onClick={() => setActiveTab('schedule')} className={`flex items-center justify-center gap-2 px-3 py-2 md:px-3.5 md:py-1.5 rounded-lg text-xs md:text-sm font-semibold transition ${activeTab === 'schedule' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+          <ClockIcon className="w-5 h-5 md:w-4 md:h-4" />
+          <span className="hidden md:inline">Schedule</span>
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8">
+      <header className="max-w-7xl mx-auto mb-6 bg-white p-4 md:p-5 rounded-lg border border-slate-200 shadow-sm">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
+          <div className="hidden md:flex md:justify-start">
+            {monthPickerControl}
+          </div>
+
+          <div className="flex justify-center items-center gap-3">
+            {cyclesAndTabsControl}
+          </div>
+
+          <div className="flex justify-end">
+            {userMenuControl}
+          </div>
         </div>
       </header>
+
+      {activeTab === 'calendar' && (
+        <div className="md:hidden max-w-7xl mx-auto mb-3">
+          {monthPickerControl}
+        </div>
+      )}
 
       {activeTab === 'calendar' && (
         <div className="-mx-4 md:mx-auto md:max-w-7xl bg-transparent md:bg-white rounded-none md:rounded-lg border-0 md:border md:border-slate-200 shadow-none md:shadow-sm overflow-hidden">
