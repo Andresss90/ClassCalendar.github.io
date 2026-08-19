@@ -175,6 +175,10 @@ const pastelColors = [
   { name: 'Pastel Indigo', bg: 'bg-indigo-100', text: 'text-indigo-800', border: 'border-indigo-200' },
 ];
 
+// Cursos existentes en el colegio. Los profesores dictan en varios de estos a la vez (no tienen
+// un curso propio como los representantes), así que al publicar una tarea o evento eligen a cuál va.
+const ALL_COURSES = ['9A', '9B', '9C', '9D', '10A', '10B', '10C', '11A', '11B', '11C', '11D'];
+
 // Cronograma académico 2026: cada ciclo dura 6 días de clase (no necesariamente consecutivos,
 // ya que festivos y recesos interrumpen la secuencia). Se listan las 6 fechas reales de cada
 // ciclo en vez de un simple rango, para no marcar como "ciclo" los días de vacaciones intermedios.
@@ -305,6 +309,7 @@ export default function App() {
   const [newTaskDescription, setNewTaskDescription] = useState('');
   const [newTaskDate, setNewTaskDate] = useState(minDateStr);
   const [selectedPastelIndex, setSelectedPastelIndex] = useState(0);
+  const [postToCourseId, setPostToCourseId] = useState(ALL_COURSES[0]);
 
   const [schoolTasks, setSchoolTasks] = useState<Task[]>([]);
   const [schoolEvents, setSchoolEvents] = useState<Task[]>([]);
@@ -527,8 +532,8 @@ export default function App() {
   };
 
   const saveGeneralEventOverride = async () => {
-    if (!editingGeneralEvent || !userProfile || !genEventTitle.trim() || !genEventStartDate) return;
-    const targetCourse = userProfile.courseId || '10B';
+    if (!editingGeneralEvent || !userProfile || userProfile.role === 'student' || !genEventTitle.trim() || !genEventStartDate) return;
+    const targetCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
     const overrideId = `${targetCourse}__${editingGeneralEvent.id}`;
     const currentColor = pastelColors[genEventColorIdx];
 
@@ -553,8 +558,8 @@ export default function App() {
   };
 
   const hideGeneralEventForCourse = async (evt: GeneralEventDefault) => {
-    if (!userProfile) return;
-    const targetCourse = userProfile.courseId || '10B';
+    if (!userProfile || userProfile.role === 'student') return;
+    const targetCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
     const overrideId = `${targetCourse}__${evt.id}`;
     const overrideData: GeneralEventOverride = { baseEventId: evt.id, courseId: targetCourse, deleted: true };
     try {
@@ -566,8 +571,8 @@ export default function App() {
   };
 
   const resetGeneralEventOverride = async (evt: GeneralEventDefault) => {
-    if (!userProfile) return;
-    const targetCourse = userProfile.courseId || '10B';
+    if (!userProfile || userProfile.role === 'student') return;
+    const targetCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
     const overrideId = `${targetCourse}__${evt.id}`;
     try {
       await deleteDoc(doc(db, 'generalEventOverrides', overrideId));
@@ -587,6 +592,7 @@ export default function App() {
     setNewTaskDescription('');
     setNewTaskDate(minDateStr);
     setSelectedPastelIndex(0);
+    setPostToCourseId(ALL_COURSES.includes(userProfile?.courseId || '') ? userProfile!.courseId : ALL_COURSES[0]);
     setIsTaskModalOpen(true);
   };
 
@@ -595,6 +601,7 @@ export default function App() {
     setNewTaskTitle(task.title);
     setNewTaskDescription(task.description || '');
     setNewTaskDate(task.dateStr);
+    if (ALL_COURSES.includes(task.courseId)) setPostToCourseId(task.courseId);
 
     const foundIdx = pastelColors.findIndex(c => `${c.bg} ${c.text} ${c.border}` === task.color);
     setSelectedPastelIndex(foundIdx !== -1 ? foundIdx : 0);
@@ -604,9 +611,9 @@ export default function App() {
   const handleSaveItem = async (type: 'personal' | 'school' | 'event') => {
     if (!newTaskTitle.trim() || !userProfile || !firebaseUser) return;
 
-    const activeCourse = userProfile.courseId && userProfile.courseId.trim() !== ''
-      ? userProfile.courseId
-      : '10B';
+    // Los representantes (y estudiantes) publican siempre en su propio curso. Los profesores no
+    // tienen un curso fijo (dictan en varios), así que usan el que hayan elegido en el selector.
+    const activeCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
 
     const currentColor = pastelColors[selectedPastelIndex];
     const fullColorClass = `${currentColor.bg} ${currentColor.text} ${currentColor.border}`;
@@ -746,8 +753,8 @@ export default function App() {
 
   const handleSelectSubject = async (subjectName: string) => {
     if (!editingCell || !userProfile || !isScheduleEditMode) return;
-    if (userProfile.role === 'student') {
-      alert('Students are not allowed to edit the class schedule.');
+    if (userProfile.role !== 'representative') {
+      alert('Only representatives are allowed to edit the class schedule.');
       setEditingCell(null);
       return;
     }
@@ -1337,16 +1344,16 @@ export default function App() {
             <div>
               <h2 className="text-xl font-bold text-slate-900">Schedule Template ({activeCourse})</h2>
               <p className="text-xs text-slate-500 mt-1">
-                {userProfile.role === 'student'
-                  ? 'Static view of your course schedule.'
-                  : isScheduleEditMode
-                  ? 'Editing mode active: Click on any cell to change subjects.'
-                  : 'Click the pencil icon on the right to enable editing.'}
+                {userProfile.role === 'representative'
+                  ? isScheduleEditMode
+                    ? 'Editing mode active: Click on any cell to change subjects.'
+                    : 'Click the pencil icon on the right to enable editing.'
+                  : 'Static view of your course schedule.'}
               </p>
             </div>
 
-            {/* BOTONES DE EDICIÓN PARA REPRESENTANTES Y PROFESORES */}
-            {userProfile.role !== 'student' && (
+            {/* BOTONES DE EDICIÓN SOLO PARA REPRESENTANTES */}
+            {userProfile.role === 'representative' && (
               <div className="flex items-center gap-2">
                 {isScheduleEditMode && (
                   <button
@@ -1484,6 +1491,16 @@ export default function App() {
                 <label className="text-xs font-semibold text-slate-600 block mb-1">Date</label>
                 <input type="date" value={newTaskDate} min={minDateStr} max={maxDateStr} onChange={e => setNewTaskDate(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md" />
               </div>
+              {userProfile.role === 'teacher' && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
+                    Course <span className="text-[10px] text-slate-400 font-normal">(only used when publishing a school task/event)</span>
+                  </label>
+                  <select value={postToCourseId} onChange={e => setPostToCourseId(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md">
+                    {ALL_COURSES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+              )}
               <div>
                 <label className="text-xs font-semibold text-slate-600 block mb-2">Color Tag:</label>
                 <div className="flex flex-wrap gap-2.5">
@@ -1520,7 +1537,9 @@ export default function App() {
             <div>
               <h3 className="text-lg font-bold text-slate-800">Edit General Event</h3>
               <p className="text-xs text-slate-500 mt-1">
-                Changes only apply to your course ({activeCourse}). Other courses keep seeing the original event.
+                {userProfile.role === 'teacher'
+                  ? 'Changes only apply to the course selected below. Other courses keep seeing the original event.'
+                  : `Changes only apply to your course (${activeCourse}). Other courses keep seeing the original event.`}
               </p>
             </div>
             <div className="space-y-4">
@@ -1528,6 +1547,14 @@ export default function App() {
                 <label className="text-xs font-semibold text-slate-600 block mb-1">Title *</label>
                 <input type="text" value={genEventTitle} onChange={e => setGenEventTitle(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md" />
               </div>
+              {userProfile.role === 'teacher' && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">Course</label>
+                  <select value={postToCourseId} onChange={e => setPostToCourseId(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md">
+                    {ALL_COURSES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+              )}
               <div>
                 <label className="text-xs font-semibold text-slate-600 block mb-1">Description</label>
                 <textarea rows={2} value={genEventDescription} onChange={e => setGenEventDescription(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md resize-none" />
@@ -1556,7 +1583,7 @@ export default function App() {
             </div>
             <div className="flex justify-end gap-2 pt-3 border-t">
               <button type="button" onClick={() => setEditingGeneralEvent(null)} className="px-4 py-2 text-xs font-semibold text-slate-500">Cancel</button>
-              <button type="button" onClick={saveGeneralEventOverride} className="px-5 py-2 text-xs bg-indigo-600 text-white font-semibold rounded-md">Save for My Course</button>
+              <button type="button" onClick={saveGeneralEventOverride} className="px-5 py-2 text-xs bg-indigo-600 text-white font-semibold rounded-md">{userProfile.role === 'teacher' ? 'Save for Selected Course' : 'Save for My Course'}</button>
             </div>
           </div>
         </div>

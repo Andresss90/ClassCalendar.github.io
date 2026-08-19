@@ -2,26 +2,41 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function isTeacherOrRepresentative() {
+      return request.auth != null && myRole() in ['teacher', 'representative'];
+    }
+    function isRepresentative() {
+      return request.auth != null && myRole() == 'representative';
+    }
+
     match /users/{userId} {
       allow read, write: if request.auth != null;
     }
 
     match /schoolTasks/{taskId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if isTeacherOrRepresentative();
     }
 
     // Regla para Eventos Escolares
     match /schoolEvents/{eventId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if isTeacherOrRepresentative();
     }
 
+    // Solo los representantes pueden editar el horario de clases
     match /schedules/{courseId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if isRepresentative();
     }
 
     // Regla para overrides de eventos generales (Semana Santa, Día de la Familia, etc.) por curso
     match /generalEventOverrides/{overrideId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if isTeacherOrRepresentative();
     }
 
     match /users/{userId}/personalTodos/{todoId} {

@@ -34,10 +34,13 @@ async function main() {
   const serviceAccountPath = findServiceAccountFile();
   console.log('Usando clave de administrador:', path.basename(serviceAccountPath));
 
-  const admin = require('firebase-admin');
-  admin.initializeApp({
-    credential: admin.credential.cert(require(serviceAccountPath)),
+  const { initializeApp, cert } = require('firebase-admin/app');
+  const { getAuth } = require('firebase-admin/auth');
+
+  const app = initializeApp({
+    credential: cert(require(serviceAccountPath)),
   });
+  const auth = getAuth(app);
 
   const users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
   console.log(`Creando cuentas para ${users.length} personas...`);
@@ -48,7 +51,7 @@ async function main() {
 
   for (const user of users) {
     try {
-      await admin.auth().createUser({
+      await auth.createUser({
         email: user.email,
         password: user.password,
         displayName: user.name,
