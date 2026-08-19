@@ -1,12 +1,14 @@
 // Script de uso único: crea en Firebase Authentication una cuenta por cada persona
 // listada en usuarios-PRIVADO-passwords-no-subir.json (email + password + name).
+// Si la cuenta ya existe, actualiza su contraseña para que coincida con la del JSON
+// (útil para rotar contraseñas, por ejemplo si todas compartían la misma).
 // No forma parte de la app (no se importa desde src/), solo se corre manualmente con Node.
 //
 // Uso:
 //   1. Coloca el archivo de la clave de administrador (Service Account) en la raíz del proyecto.
 //   2. node bulk-create-users.cjs
 //
-// Es seguro correrlo varias veces: si un correo ya existe, simplemente se salta.
+// Es seguro correrlo varias veces.
 
 const fs = require('fs');
 const path = require('path');
@@ -46,7 +48,7 @@ async function main() {
   console.log(`Creando cuentas para ${users.length} personas...`);
 
   let created = 0;
-  let alreadyExisted = 0;
+  let passwordUpdated = 0;
   let failed = 0;
 
   for (const user of users) {
@@ -60,7 +62,15 @@ async function main() {
       console.log('✓ Creada:', user.email);
     } catch (err) {
       if (err.code === 'auth/email-already-exists') {
-        alreadyExisted++;
+        try {
+          const existing = await auth.getUserByEmail(user.email);
+          await auth.updateUser(existing.uid, { password: user.password });
+          passwordUpdated++;
+          console.log('~ Contraseña actualizada:', user.email);
+        } catch (updateErr) {
+          failed++;
+          console.error('✗ Error actualizando contraseña de', user.email, ':', updateErr.message);
+        }
       } else {
         failed++;
         console.error('✗ Error con', user.email, ':', err.message);
@@ -70,7 +80,7 @@ async function main() {
 
   console.log('\n--- Resumen ---');
   console.log('Creadas ahora:', created);
-  console.log('Ya existían:', alreadyExisted);
+  console.log('Contraseñas actualizadas:', passwordUpdated);
   console.log('Fallaron:', failed);
   console.log('Total procesadas:', users.length);
 }

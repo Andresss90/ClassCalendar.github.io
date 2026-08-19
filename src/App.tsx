@@ -5,7 +5,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  verifyPasswordResetCode,
+  confirmPasswordReset
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -344,6 +346,13 @@ export default function App() {
   const [authError, setAuthError] = useState('');
   const [authMessage, setAuthMessage] = useState('');
 
+  // Estado del flujo "restablecer contraseña" cuando se llega desde el link del correo
+  const [resetOobCode, setResetOobCode] = useState<string | null>(null);
+  const [resetStatus, setResetStatus] = useState<'checking' | 'ready' | 'invalid' | 'done'>('checking');
+  const [resetEmailForCode, setResetEmailForCode] = useState('');
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [resetError, setResetError] = useState('');
+
   const [activeTab, setActiveTab] = useState<'calendar' | 'tasks' | 'schedule'>('calendar');
   const [showCycles, setShowCycles] = useState<boolean>(() => localStorage.getItem('showCycles') === 'true');
   const [showMonthPicker, setShowMonthPicker] = useState(false);
@@ -447,6 +456,23 @@ export default function App() {
     localStorage.setItem('showCycles', String(showCycles));
   }, [showCycles]);
 
+  // Si el link del correo de "reset password" trajo ?mode=resetPassword&oobCode=...,
+  // mostramos la pantalla para elegir la nueva contraseña en vez del login normal.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('mode');
+    const oobCode = params.get('oobCode');
+    if (mode === 'resetPassword' && oobCode) {
+      setResetOobCode(oobCode);
+      verifyPasswordResetCode(auth, oobCode)
+        .then(email => {
+          setResetEmailForCode(email);
+          setResetStatus('ready');
+        })
+        .catch(() => setResetStatus('invalid'));
+    }
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError('');
@@ -466,10 +492,32 @@ export default function App() {
       return;
     }
     try {
-      await sendPasswordResetEmail(auth, authEmail.trim());
+      // Apunta el link del correo de vuelta a esta misma app (en vez de la página
+      // genérica de Firebase), para poder manejar el reseteo dentro de la app.
+      await sendPasswordResetEmail(auth, authEmail.trim(), {
+        url: window.location.origin + import.meta.env.BASE_URL,
+        handleCodeInApp: true,
+      });
       setAuthMessage('Email sent! Check your inbox to reset your password. (It may be in spam)');
     } catch (err: any) {
       setAuthError('Could not send the email: ' + (err.message || 'Error'));
+    }
+  };
+
+  const handleConfirmNewPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResetError('');
+    if (!resetOobCode) return;
+    if (newPasswordInput.length < 6) {
+      setResetError('Password must be at least 6 characters.');
+      return;
+    }
+    try {
+      await confirmPasswordReset(auth, resetOobCode, newPasswordInput);
+      setResetStatus('done');
+      window.history.replaceState(null, '', window.location.pathname);
+    } catch (err: any) {
+      setResetError('Could not reset the password. The link may have expired — go back and request a new one.');
     }
   };
 
@@ -929,6 +977,45 @@ export default function App() {
   };
 
   // LOGIN SCREEN
+  if (resetOobCode) {
+    return (
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200 max-w-md w-full p-6 space-y-6">
+          <div className="text-center space-y-1">
+            <h2 className="text-2xl font-black text-slate-900">Reset Password</h2>
+            {resetStatus === 'ready' && <p className="text-xs text-slate-500">Choose a new password for {resetEmailForCode}</p>}
+          </div>
+
+          {resetStatus === 'checking' && <p className="text-sm text-slate-500 text-center py-2">Checking link...</p>}
+
+          {resetStatus === 'invalid' && (
+            <div className="p-3 bg-red-50 text-red-700 text-xs rounded-md border border-red-200">
+              This link is invalid or has expired. Go back to the sign-in screen and request a new one.
+            </div>
+          )}
+
+          {resetStatus === 'ready' && (
+            <form onSubmit={handleConfirmNewPassword} className="space-y-4">
+              {resetError && <div className="p-3 bg-red-50 text-red-700 text-xs rounded-md border border-red-200">{resetError}</div>}
+              <div>
+                <label className="text-xs font-bold text-slate-600 block mb-1">New Password</label>
+                <input type="password" required minLength={6} value={newPasswordInput} onChange={e => setNewPasswordInput(e.target.value)} className="w-full p-2.5 text-sm bg-slate-50 border rounded-md" placeholder="••••••" />
+              </div>
+              <button type="submit" className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-md shadow transition">Save New Password</button>
+            </form>
+          )}
+
+          {resetStatus === 'done' && (
+            <div className="space-y-4 text-center">
+              <div className="p-3 bg-emerald-50 text-emerald-700 text-xs rounded-md border border-emerald-200">Password updated. You can sign in now.</div>
+              <button onClick={() => setResetOobCode(null)} className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-md shadow transition">Go to Sign In</button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   if (!firebaseUser || !userProfile) {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
