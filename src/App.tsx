@@ -1040,16 +1040,16 @@ export default function App() {
   );
 
   const tabsGroupControl = (
-    <div className="flex items-center bg-slate-100 p-1 rounded-md border border-slate-200">
-      <button onClick={() => { setActiveTab('calendar'); setSelectedDayDetails(null); }} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+    <div className="flex items-center bg-slate-100 p-1 rounded-full border border-slate-200">
+      <button onClick={() => { setActiveTab('calendar'); setSelectedDayDetails(null); }} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-full text-xs md:text-sm font-semibold transition ${activeTab === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
         <CalendarIcon className="w-6 h-6 md:w-4 md:h-4" />
         <span className="hidden md:inline">Calendar</span>
       </button>
-      <button onClick={() => setActiveTab('tasks')} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-md text-xs md:text-sm font-semibold transition ${activeTab === 'tasks' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+      <button onClick={() => setActiveTab('tasks')} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-full text-xs md:text-sm font-semibold transition ${activeTab === 'tasks' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
         <CheckSquareIcon className="w-6 h-6 md:w-4 md:h-4" />
         <span className="hidden md:inline">Tasks</span>
       </button>
-      <button onClick={() => setActiveTab('schedule')} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-lg text-xs md:text-sm font-semibold transition ${activeTab === 'schedule' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+      <button onClick={() => setActiveTab('schedule')} className={`flex items-center justify-center gap-2 px-3.5 py-2.5 md:px-3.5 md:py-1.5 rounded-full text-xs md:text-sm font-semibold transition ${activeTab === 'schedule' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
         <ClockIcon className="w-6 h-6 md:w-4 md:h-4" />
         <span className="hidden md:inline">Schedule</span>
       </button>
