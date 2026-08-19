@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -120,6 +120,67 @@ const InfoIcon = () => (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 16v-4.5M12 8.25h.01" />
   </svg>
 );
+
+// Small "?" button that opens a popover explaining a section. The popover's
+// position is computed from the button's actual location on screen (instead
+// of a fixed side) so it never runs off the edge on narrow phone screens.
+const InfoTip = ({ isOpen, onToggle, onClose, text }: { isOpen: boolean; onToggle: () => void; onClose: () => void; text: string }) => {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const popoverWidth = 240;
+
+  useEffect(() => {
+    if (!isOpen) {
+      setPos(null);
+      return;
+    }
+    const place = () => {
+      const btn = btnRef.current;
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      const margin = 12;
+      let left = rect.left;
+      if (left + popoverWidth + margin > window.innerWidth) {
+        left = window.innerWidth - popoverWidth - margin;
+      }
+      if (left < margin) left = margin;
+      setPos({ top: rect.bottom + 8, left });
+    };
+    place();
+    window.addEventListener('resize', onClose);
+    window.addEventListener('scroll', onClose, true);
+    return () => {
+      window.removeEventListener('resize', onClose);
+      window.removeEventListener('scroll', onClose, true);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  return (
+    <div className="relative inline-flex">
+      <button
+        ref={btnRef}
+        type="button"
+        onClick={onToggle}
+        className="w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-500 flex items-center justify-center transition shrink-0"
+        aria-label="More information"
+      >
+        <InfoIcon />
+      </button>
+      {isOpen && pos && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={onClose} />
+          <div
+            className="fixed z-50 bg-slate-800 text-white text-xs font-normal normal-case tracking-normal leading-snug rounded-lg shadow-xl p-3"
+            style={{ top: pos.top, left: pos.left, width: popoverWidth }}
+          >
+            {text}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 interface UserProfile {
   uid: string;
@@ -254,22 +315,22 @@ interface GeneralEventOverride {
 // Fechas "último ciclo de Agosto/Noviembre" del cronograma están marcadas como estimadas
 // (tomé el último día de ese ciclo); confírmalas si tienes la fecha exacta.
 const DEFAULT_GENERAL_EVENTS: GeneralEventDefault[] = [
-  { id: 'reunion-padres-1', title: 'Reunión de Padres', description: 'Reunión general de padres de familia.', dateStr: '2026-01-31', color: 'bg-blue-100 text-blue-800 border-blue-200' },
-  { id: 'reunion-padres-2', title: 'Reunión de Padres', description: 'Reunión general de padres de familia.', dateStr: '2026-02-07', color: 'bg-blue-100 text-blue-800 border-blue-200' },
-  { id: 'salida-pedagogica-1', title: 'Salida Pedagógica (Convivencia)', description: 'Actividad de convivencia institucional.', dateStr: '2026-03-27', color: 'bg-teal-100 text-teal-800 border-teal-200' },
-  { id: 'receso-semana-santa', title: 'Receso Escolar - Semana Santa', description: 'No hay clases durante el receso de Semana Santa.', dateStr: '2026-03-30', endDateStr: '2026-04-03', color: 'bg-amber-100 text-amber-800 border-amber-200' },
-  { id: 'festival-dia-idioma', title: 'Festival Cultural (Día del Idioma)', description: 'Festival cultural institucional.', dateStr: '2026-04-24', color: 'bg-purple-100 text-purple-800 border-purple-200' },
-  { id: 'dia-funcionario', title: 'Día del Funcionario GCRB', description: '', dateStr: '2026-05-29', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
-  { id: 'jornada-pedagogica', title: 'Jornada Pedagógica', description: '', dateStr: '2026-07-06', color: 'bg-teal-100 text-teal-800 border-teal-200' },
-  { id: 'festival-colombianidad', title: 'Festival Cultural (Día de la Colombianidad)', description: 'Festival cultural institucional.', dateStr: '2026-07-24', color: 'bg-purple-100 text-purple-800 border-purple-200' },
-  { id: 'salida-pedagogica-2', title: 'Salida Pedagógica (Convivencia)', description: 'Actividad de convivencia institucional. (Fecha estimada: último ciclo de agosto)', dateStr: '2026-08-14', color: 'bg-teal-100 text-teal-800 border-teal-200' },
-  { id: 'concurso-talentos', title: 'Concurso de Talentos por Fraternidades', description: 'Alistamiento para el Día de la Familia GCRB.', dateStr: '2026-09-25', color: 'bg-pink-100 text-pink-800 border-pink-200' },
-  { id: 'dia-familia', title: 'Día de la Familia GCRB', description: '', dateStr: '2026-09-26', color: 'bg-pink-100 text-pink-800 border-pink-200' },
-  { id: 'mun-gcrb', title: 'MUN GCRB', description: 'Simulación de Naciones Unidas.', dateStr: '2026-10-01', endDateStr: '2026-10-02', color: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
-  { id: 'dia-estudiante', title: 'Día del Estudiante', description: '', dateStr: '2026-10-30', color: 'bg-amber-100 text-amber-800 border-amber-200' },
-  { id: 'festival-international-day', title: 'Festival Cultural (International Day)', description: 'Festival cultural institucional.', dateStr: '2026-11-06', color: 'bg-purple-100 text-purple-800 border-purple-200' },
-  { id: 'salida-pedagogica-3', title: 'Salida Pedagógica (Convivencia)', description: 'Actividad de convivencia institucional. (Fecha estimada: último ciclo de noviembre)', dateStr: '2026-11-13', color: 'bg-teal-100 text-teal-800 border-teal-200' },
-  { id: 'promocion-gcrb', title: 'Promoción GCRB y Bachillerato Internacional', description: 'XVIII Promoción GCRB y V Promoción Bachillerato Internacional Currículo CIE.', dateStr: '2026-12-02', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
+  { id: 'reunion-padres-1', title: 'Parent Meeting', description: 'General parent meeting.', dateStr: '2026-01-31', color: 'bg-blue-100 text-blue-800 border-blue-200' },
+  { id: 'reunion-padres-2', title: 'Parent Meeting', description: 'General parent meeting.', dateStr: '2026-02-07', color: 'bg-blue-100 text-blue-800 border-blue-200' },
+  { id: 'salida-pedagogica-1', title: 'Field Trip (Class Bonding)', description: 'School-wide bonding activity.', dateStr: '2026-03-27', color: 'bg-teal-100 text-teal-800 border-teal-200' },
+  { id: 'receso-semana-santa', title: 'School Break - Holy Week', description: 'No classes during the Holy Week break.', dateStr: '2026-03-30', endDateStr: '2026-04-03', color: 'bg-amber-100 text-amber-800 border-amber-200' },
+  { id: 'festival-dia-idioma', title: 'Cultural Festival (Language Day)', description: 'School-wide cultural festival.', dateStr: '2026-04-24', color: 'bg-purple-100 text-purple-800 border-purple-200' },
+  { id: 'dia-funcionario', title: 'GCRB Staff Day', description: '', dateStr: '2026-05-29', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
+  { id: 'jornada-pedagogica', title: 'Professional Development Day', description: '', dateStr: '2026-07-06', color: 'bg-teal-100 text-teal-800 border-teal-200' },
+  { id: 'festival-colombianidad', title: 'Cultural Festival (Colombian Heritage Day)', description: 'School-wide cultural festival.', dateStr: '2026-07-24', color: 'bg-purple-100 text-purple-800 border-purple-200' },
+  { id: 'salida-pedagogica-2', title: 'Field Trip (Class Bonding)', description: 'School-wide bonding activity. (Estimated date: last cycle of August)', dateStr: '2026-08-14', color: 'bg-teal-100 text-teal-800 border-teal-200' },
+  { id: 'concurso-talentos', title: 'House Talent Contest', description: 'Preparation for GCRB Family Day.', dateStr: '2026-09-25', color: 'bg-pink-100 text-pink-800 border-pink-200' },
+  { id: 'dia-familia', title: 'GCRB Family Day', description: '', dateStr: '2026-09-26', color: 'bg-pink-100 text-pink-800 border-pink-200' },
+  { id: 'mun-gcrb', title: 'MUN GCRB', description: 'Model United Nations simulation.', dateStr: '2026-10-01', endDateStr: '2026-10-02', color: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
+  { id: 'dia-estudiante', title: 'Student Day', description: '', dateStr: '2026-10-30', color: 'bg-amber-100 text-amber-800 border-amber-200' },
+  { id: 'festival-international-day', title: 'Cultural Festival (International Day)', description: 'School-wide cultural festival.', dateStr: '2026-11-06', color: 'bg-purple-100 text-purple-800 border-purple-200' },
+  { id: 'salida-pedagogica-3', title: 'Field Trip (Class Bonding)', description: 'School-wide bonding activity. (Estimated date: last cycle of November)', dateStr: '2026-11-13', color: 'bg-teal-100 text-teal-800 border-teal-200' },
+  { id: 'promocion-gcrb', title: 'GCRB Graduation and International Baccalaureate', description: '18th GCRB Graduating Class and 5th International Baccalaureate (CIE Curriculum) Graduating Class.', dateStr: '2026-12-02', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
 ];
 
 const eventCoversDate = (ev: { dateStr: string; endDateStr?: string | null }, dateStr: string) =>
@@ -401,14 +462,14 @@ export default function App() {
     setAuthError('');
     setAuthMessage('');
     if (!authEmail.trim()) {
-      setAuthError('Por favor ingresa tu correo electrónico primero en el campo de arriba.');
+      setAuthError('Please enter your email address in the field above first.');
       return;
     }
     try {
       await sendPasswordResetEmail(auth, authEmail.trim());
-      setAuthMessage('¡Correo enviado! Revisa tu bandeja de entrada para restablecer tu contraseña. (Puede estar en spam)');
+      setAuthMessage('Email sent! Check your inbox to reset your password. (It may be in spam)');
     } catch (err: any) {
-      setAuthError('No se pudo enviar el correo: ' + (err.message || 'Error'));
+      setAuthError('Could not send the email: ' + (err.message || 'Error'));
     }
   };
 
@@ -900,7 +961,7 @@ export default function App() {
               onClick={handlePasswordReset}
               className="text-xs text-indigo-600 hover:underline font-semibold"
             >
-              ¿Olvidaste o quieres cambiar tu contraseña?
+              Forgot or want to change your password?
             </button>
           </div>
         </div>
@@ -910,41 +971,29 @@ export default function App() {
 
   const activeCourse = userProfile.courseId || '10B';
 
-  // Textos de ayuda de la pestaña Tasks & Events: cambian según el rol, porque
-  // los permisos sobre cada categoría son distintos para cada tipo de cuenta.
-  const courseScopeText = userProfile.role === 'teacher' ? 'el curso que tengas seleccionado arriba' : 'tu curso';
+  // Help text for the Tasks & Events tab: it changes based on role, since
+  // permissions for each category differ between account types.
+  const courseScopeText = userProfile.role === 'teacher' ? 'the course you have selected above' : 'your course';
   const sectionInfoText = {
-    personal: 'Solo vos podés ver estas tareas: son privadas y nadie más en el colegio las ve ni las puede editar.',
+    personal: 'Only you can see these tasks: they are private and no one else at school can see or edit them.',
     schoolTasks: userProfile.role === 'student'
-      ? 'Las publica tu profesor o representante para tu curso. Podés marcarlas como completas, pero no podés editarlas ni eliminarlas.'
-      : `Podés crear, editar y eliminar tareas para ${courseScopeText}. Los estudiantes de ese curso las verán y podrán marcarlas como completas.`,
+      ? 'Published by your teacher or representative for your course. You can mark them as complete, but not edit or delete them.'
+      : `You can create, edit, and delete tasks for ${courseScopeText}. Students in that course will see them and can mark them as complete.`,
     schoolEvents: userProfile.role === 'student'
-      ? 'Los publica tu profesor o representante para tu curso. Solo ellos pueden crearlos, editarlos o eliminarlos.'
-      : `Podés crear, editar y eliminar eventos para ${courseScopeText}.`,
+      ? 'Published by your teacher or representative for your course. Only they can create, edit, or delete them.'
+      : `You can create, edit, and delete events for ${courseScopeText}.`,
     generalEvents: userProfile.role === 'student'
-      ? 'Los define el colegio y los ve todo el mundo. Tu profesor o representante puede personalizar cómo se muestran en tu curso.'
-      : `Estos eventos son del colegio y aparecen en todos los cursos. Si los editás o eliminás, el cambio solo afecta a cómo se ven en ${courseScopeText} — el resto sigue viendo el original.`,
+      ? 'Set by the school and visible to everyone. Your teacher or representative can customize how they appear for your course.'
+      : `These events belong to the school and appear in every course. If you edit or delete one, the change only affects how it looks in ${courseScopeText} — other courses keep seeing the original.`,
   };
 
   const renderInfoTip = (id: string, text: string) => (
-    <div className="relative inline-flex">
-      <button
-        type="button"
-        onClick={() => setOpenInfoTip(openInfoTip === id ? null : id)}
-        className="w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-500 flex items-center justify-center transition shrink-0"
-        aria-label="More information"
-      >
-        <InfoIcon />
-      </button>
-      {openInfoTip === id && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpenInfoTip(null)} />
-          <div className="absolute top-full left-0 mt-2 bg-slate-800 text-white text-xs font-normal normal-case tracking-normal leading-snug rounded-lg shadow-xl p-3 z-50 w-60">
-            {text}
-          </div>
-        </>
-      )}
-    </div>
+    <InfoTip
+      isOpen={openInfoTip === id}
+      onToggle={() => setOpenInfoTip(openInfoTip === id ? null : id)}
+      onClose={() => setOpenInfoTip(null)}
+      text={text}
+    />
   );
 
   // Eventos generales por defecto, con el override del curso aplicado (si existe) y ocultando los que el curso borró
