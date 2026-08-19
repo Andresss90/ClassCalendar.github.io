@@ -1057,7 +1057,7 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8 pt-[calc(1.25rem+env(safe-area-inset-top))] md:pt-8">
       <header className="max-w-7xl mx-auto mb-6 bg-white p-4 md:p-5 rounded-lg border border-slate-200 shadow-sm">
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
           <div className="flex justify-start">
