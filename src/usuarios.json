@@ -3,1386 +3,1782 @@
     "email": "ana.segura.est@gcrb.edu.co",
     "name": "Ana Segura",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "ana.ruiz.est@gcrb.edu.co",
     "name": "Ana Ruiz",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "andres.zarama.est@gcrb.edu.co",
     "name": "Andres Zarama",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "isabella.pardo.est@gcrb.edu.co",
     "name": "Isabella Pardo",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "jeronimo.gaviria.est@gcrb.edu.co",
     "name": "Jeronimo Gaviria",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "juan.garcia.est@gcrb.edu.co",
     "name": "Juan Garcia",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "juan.guerrero.est@gcrb.edu.co",
     "name": "Juan Guerrero",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "lina.santafe.est@gcrb.edu.co",
     "name": "Lina Santafe",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "maria.sandoval.est@gcrb.edu.co",
     "name": "Maria Sandoval",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "nicolas.jimenez.est@gcrb.edu.co",
     "name": "Nicolas Jimenez",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "nicolas.sanabria.est@gcrb.edu.co",
     "name": "Nicolas Sanabria",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "samuel.gerena.est@gcrb.edu.co",
     "name": "Samuel Gerena",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "santiago.caceres.est@gcrb.edu.co",
     "name": "Santiago Caceres",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "sara.lozano.est@gcrb.edu.co",
     "name": "Sara Lozano",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "sarah.molina.est@gcrb.edu.co",
     "name": "Sarah Molina",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "tomas.lopez.est@gcrb.edu.co",
     "name": "Tomas Lopez",
     "role": "representative",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "valeria.pedrozo.est@gcrb.edu.co",
     "name": "Valeria Pedrozo",
     "role": "student",
-    "courseId": "10A"
+    "courseId": "10A",
+    "courses": []
   },
   {
     "email": "alejandra.david.est@gcrb.edu.co",
     "name": "Alejandra David",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "ana.triana.est@gcrb.edu.co",
     "name": "Ana Triana",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "andres.garces.est@gcrb.edu.co",
     "name": "Andres Garces",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "arturo.mejia.est@gcrb.edu.co",
     "name": "Arturo Mejia",
     "role": "representative",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "diego.gutierrez.est@gcrb.edu.co",
     "name": "Diego Gutierrez",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "isabella.roa.est@gcrb.edu.co",
     "name": "Isabella Roa",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "jose.cerdas.est@gcrb.edu.co",
     "name": "Jose Cerdas",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "luciana.delgado.est@gcrb.edu.co",
     "name": "Luciana Delgado",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "mariana.abril.est@gcrb.edu.co",
     "name": "Mariana Abril",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "mariana.medina.est@gcrb.edu.co",
     "name": "Mariana Medina",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "nicolas.saenz.est@gcrb.edu.co",
     "name": "Nicolas Saenz",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "sara.cardenas.est@gcrb.edu.co",
     "name": "Sara Cardenas",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "sara.velandia.est@gcrb.edu.co",
     "name": "Sara Velandia",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "sebastian.pardo.est@gcrb.edu.co",
     "name": "Sebastian Pardo",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "sofia.berdugo.est@gcrb.edu.co",
     "name": "Sofia Berdugo",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "sofia.higuera.est@gcrb.edu.co",
     "name": "Sofia Higuera",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "valentina.jaimes.est@gcrb.edu.co",
     "name": "Valentina Jaimes",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "zara.romero.est@gcrb.edu.co",
     "name": "Zara Romero",
     "role": "student",
-    "courseId": "10B"
+    "courseId": "10B",
+    "courses": []
   },
   {
     "email": "felipe.herran.est@gcrb.edu.co",
     "name": "Felipe Herran",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "geronimo.borda.est@gcrb.edu.co",
     "name": "Geronimo Borda",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "isabella.martinez.est@gcrb.edu.co",
     "name": "Isabella Martinez",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "ivanna.curvelo.est@gcrb.edu.co",
     "name": "Ivanna Curvelo",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "jairo.gomez.est@gcrb.edu.co",
     "name": "Jairo Gomez",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "juan.hernandez.est@gcrb.edu.co",
     "name": "Juan Hernandez",
     "role": "representative",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "juan.cubillos.est@gcrb.edu.co",
     "name": "Juan Cubillos",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "juan.palacio.est@gcrb.edu.co",
     "name": "Juan Palacio",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "juan.rojas.est@gcrb.edu.co",
     "name": "Juan Rojas",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "laura.campo.est@gcrb.edu.co",
     "name": "Laura Campo",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "mariana.marroquin.est@gcrb.edu.co",
     "name": "Mariana Marroquin",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "mariana.morales.est@gcrb.edu.co",
     "name": "Mariana Morales",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "samantha.murcia.est@gcrb.edu.co",
     "name": "Samantha Murcia",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "santiago.ossa.est@gcrb.edu.co",
     "name": "Santiago Ossa",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "sara.gomez.est@gcrb.edu.co",
     "name": "Sara Gomez",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "sara.vivas.est@gcrb.edu.co",
     "name": "Sara Vivas",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "silvana.obregon.est@gcrb.edu.co",
     "name": "Silvana Obregon",
     "role": "student",
-    "courseId": "10C"
+    "courseId": "10C",
+    "courses": []
   },
   {
     "email": "liliana.garcia@gcrb.edu.co",
     "name": "Liliana Garcia",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10C"
+    ]
   },
   {
     "email": "jorge.velasquez@gcrb.edu.co",
     "name": "Jorge Velasquez",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "10B",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "paola.torres@gcrb.edu.co",
     "name": "Paola Torres",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B"
+    ]
   },
   {
     "email": "diana.montana@gcrb.edu.co",
     "name": "Diana Montaña",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "michel.arias@gcrb.edu.co",
     "name": "Michel Arias",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B"
+    ]
   },
   {
     "email": "sandra.maceta@gcrb.edu.co",
     "name": "Sandra Maceta",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "luisa.ramirez@gcrb.edu.co",
     "name": "Luisa Ramirez",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "juan.torres@gcrb.edu.co",
     "name": "Juan Torres",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "edinson.sepulveda@gcrb.edu.co",
     "name": "Edinson Sepulveda",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "harold.morales@gcrb.edu.co",
     "name": "Harold Morales",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9B"
+    ]
   },
   {
     "email": "sebastian.bolivar@gcrb.edu.co",
     "name": "Sebastian Bolivar",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "juan.pasachoa@gcrb.edu.co",
     "name": "Juan Pasachoa",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "adriana.rodriguez@gcrb.edu.co",
     "name": "Adriana Rodriguez",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "henrry.acosta@gcrb.edu.co",
     "name": "Henrry Acosta",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9D"
+    ]
   },
   {
     "email": "victor.rincon@gcrb.edu.co",
     "name": "Victor Rincon",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9C",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "david.barragan@gcrb.edu.co",
     "name": "David Barragan",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "joan.orozco@gcrb.edu.co",
     "name": "Joan Orozco",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "caterine.hernandez@gcrb.edu.co",
     "name": "Caterine Hernandez",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "martha.aranda@gcrb.edu.co",
     "name": "Martha Aranda",
     "role": "teacher",
-    "courseId": "PENDING"
+    "courseId": "PENDING",
+    "courses": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "10A",
+      "10B",
+      "10C",
+      "11A",
+      "11B",
+      "11C",
+      "11D"
+    ]
   },
   {
     "email": "maria.alfonso.est@gcrb.edu.co",
     "name": "María Alfonso",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "arielle.bello.est@gcrb.edu.co",
     "name": "Arielle Bello",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "juliana.sepulveda.est@gcrb.edu.co",
     "name": "Juliana Sepúlveda",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "santiago.arroyave.est@gcrb.edu.co",
     "name": "Santiago Arroyave",
     "role": "representative",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "thomas.sanabria.est@gcrb.edu.co",
     "name": "Thomás Sanabria",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "maria.sanchez.est@gcrb.edu.co",
     "name": "María Sánchez",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "matias.castillo.est@gcrb.edu.co",
     "name": "Matías Castillo",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "danna.gonzalez.est@gcrb.edu.co",
     "name": "Danna González",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "luciana.ramirez.est@gcrb.edu.co",
     "name": "Luciana Ramírez",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "jeronimo.gonzalez.est@gcrb.edu.co",
     "name": "Jerónimo González",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "antonio.silva.est@gcrb.edu.co",
     "name": "Antonio Silva",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "zaira.cruces.est@gcrb.edu.co",
     "name": "Zaira Cruces",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "mariana.garnica.est@gcrb.edu.co",
     "name": "Mariana Garnica",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "sara.sanchez.est@gcrb.edu.co",
     "name": "Sara Sánchez",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "alejandro.granados.est@gcrb.edu.co",
     "name": "Alejandro Granados",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "emily.sepulveda.est@gcrb.edu.co",
     "name": "Emily Sepúlveda",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "kevin.sanchez.est@gcrb.edu.co",
     "name": "Kevin Sánchez",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "sergio.dorado.est@gcrb.edu.co",
     "name": "Sergio Dorado",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "samuel.leon.est@gcrb.edu.co",
     "name": "Samuel León",
     "role": "student",
-    "courseId": "9A"
+    "courseId": "9A",
+    "courses": []
   },
   {
     "email": "sebastian.avila.est@gcrb.edu.co",
     "name": "Sebastián Ávila",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "emmanuel.cortes.est@gcrb.edu.co",
     "name": "Emmanuel Cortés",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "sara.cadena.est@gcrb.edu.co",
     "name": "Sara Cadena",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "mariana.camacho.est@gcrb.edu.co",
     "name": "Mariana Camacho",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "valeria.martinez.est@gcrb.edu.co",
     "name": "Valeria Martínez",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "gabriela.torres.est@gcrb.edu.co",
     "name": "Gabriela Torres",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "nicolas.sanchez.est@gcrb.edu.co",
     "name": "Nicolás Sánchez",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "angel.morales.est@gcrb.edu.co",
     "name": "Ángel Morales",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "martin.romero.est@gcrb.edu.co",
     "name": "Martín Romero",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "maria.riano.est@gcrb.edu.co",
     "name": "María Riaño",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "isabella.duarte.est@gcrb.edu.co",
     "name": "Isabella Duarte",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "edward.rojas.est@gcrb.edu.co",
     "name": "Edward Rojas",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "isabella.hernandez.est@gcrb.edu.co",
     "name": "Isabella Hernández",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "diego.velasquez.est@gcrb.edu.co",
     "name": "Diego Velásquez",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "samuel.delaossa.est@gcrb.edu.co",
     "name": "Samuel De la Ossa",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "maria.cruz.est@gcrb.edu.co",
     "name": "María Cruz",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "nicolas.gonzalez.est@gcrb.edu.co",
     "name": "Nicolás González",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "juan.ruiz.est@gcrb.edu.co",
     "name": "Juan Ruiz",
     "role": "student",
-    "courseId": "9B"
+    "courseId": "9B",
+    "courses": []
   },
   {
     "email": "maria.granados.est@gcrb.edu.co",
     "name": "María Granados",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "juan.leon.est@gcrb.edu.co",
     "name": "Juan León",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "luciana.duarte.est@gcrb.edu.co",
     "name": "Luciana Duarte",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "daniela.laverde.est@gcrb.edu.co",
     "name": "Daniela Laverde",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "thomas.mateus.est@gcrb.edu.co",
     "name": "Thomás Mateus",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "santiago.maldonado.est@gcrb.edu.co",
     "name": "Santiago Maldonado",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "juan.morales.est@gcrb.edu.co",
     "name": "Juan Morales",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "thomas.sanchez.est@gcrb.edu.co",
     "name": "Thomás Sánchez",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "maria.quintero.est@gcrb.edu.co",
     "name": "María Quintero",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "samuel.reina.est@gcrb.edu.co",
     "name": "Samuel Reina",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "juan.roncancio.est@gcrb.edu.co",
     "name": "Juan Roncancio",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "laura.munoz.est@gcrb.edu.co",
     "name": "Laura Muñoz",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "angel.suarez.est@gcrb.edu.co",
     "name": "Ángel Suárez",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "nicole.castiblanco.est@gcrb.edu.co",
     "name": "Nicole Castiblanco",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "valeria.melgarejo.est@gcrb.edu.co",
     "name": "Valeria Melgarejo",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "julian.santos.est@gcrb.edu.co",
     "name": "Julián Santos",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "isabella.collazos.est@gcrb.edu.co",
     "name": "Isabella Collazos",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "juana.pena.est@gcrb.edu.co",
     "name": "Juana Peña",
     "role": "student",
-    "courseId": "9C"
+    "courseId": "9C",
+    "courses": []
   },
   {
     "email": "juan.pascagaza.est@gcrb.edu.co",
     "name": "Juan Pascagaza",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "samuel.tusso.est@gcrb.edu.co",
     "name": "Samuel Tusso",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "valery.cuevas.est@gcrb.edu.co",
     "name": "Valery Cuevas",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "maria.valenzuela.est@gcrb.edu.co",
     "name": "María Valenzuela",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "danna.garcia.est@gcrb.edu.co",
     "name": "Danna García",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "santiago.romero.est@gcrb.edu.co",
     "name": "Santiago Romero",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "juan.trujillo.est@gcrb.edu.co",
     "name": "Juan Trujillo",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "isabella.arenas.est@gcrb.edu.co",
     "name": "Isabella Arenas",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "laura.castano.est@gcrb.edu.co",
     "name": "Laura Castaño",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "kaitlin.sarmiento.est@gcrb.edu.co",
     "name": "Kaitlin Sarmiento",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "christian.aldana.est@gcrb.edu.co",
     "name": "Christian Aldana",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "samuel.hernandez.est@gcrb.edu.co",
     "name": "Samuel Hernández",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "juan.novoa.est@gcrb.edu.co",
     "name": "Juan Novoa",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "kevin.palomares.est@gcrb.edu.co",
     "name": "Kevin Palomares",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "maria.velandia.est@gcrb.edu.co",
     "name": "María Velandia",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "maria.fuentes.est@gcrb.edu.co",
     "name": "María Fuentes",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "tatiana.duarte.est@gcrb.edu.co",
     "name": "Tatiana Duarte",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "samuel.garay.est@gcrb.edu.co",
     "name": "Samuel Garay",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "danna.salazar.est@gcrb.edu.co",
     "name": "Danna Salazar",
     "role": "student",
-    "courseId": "9D"
+    "courseId": "9D",
+    "courses": []
   },
   {
     "email": "sara.acuna.est@gcrb.edu.co",
     "name": "Sara Acuña",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "camila.alarcon.est@gcrb.edu.co",
     "name": "Camila Alarcón",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "luciana.alvarado.est@gcrb.edu.co",
     "name": "Luciana Alvarado",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "maria.arango.est@gcrb.edu.co",
     "name": "María Arango",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "sarah.caceres.est@gcrb.edu.co",
     "name": "Sarah Cáceres",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "mariana.cerdas.est@gcrb.edu.co",
     "name": "Mariana Cerdas",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "david.echavarria.est@gcrb.edu.co",
     "name": "David Echavarría",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "santiago.gomez.est@gcrb.edu.co",
     "name": "Santiago Gómez",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "maria.guevara.est@gcrb.edu.co",
     "name": "María Guevara",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "mayerli.hernandez.est@gcrb.edu.co",
     "name": "Mayerli Hernández",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "karen.lucero.est@gcrb.edu.co",
     "name": "Karen Lucero",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "esteban.monroy.est@gcrb.edu.co",
     "name": "Esteban Monroy",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "antonio.moreno.est@gcrb.edu.co",
     "name": "Antonio Moreno",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "maria.obando.est@gcrb.edu.co",
     "name": "María Obando",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "thomas.patino.est@gcrb.edu.co",
     "name": "Thomás Patiño",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "juan.patino.est@gcrb.edu.co",
     "name": "Juan Patiño",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "stephanie.ramirez.est@gcrb.edu.co",
     "name": "Stephanie Ramírez",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "sara.rocha.est@gcrb.edu.co",
     "name": "Sara Rocha",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "katalina.rodriguez.est@gcrb.edu.co",
     "name": "Katalina Rodríguez",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "sergio.rojas.est@gcrb.edu.co",
     "name": "Sergio Rojas",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "manuela.roman.est@gcrb.edu.co",
     "name": "Manuela Román",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "martin.villota.est@gcrb.edu.co",
     "name": "Martín Villota",
     "role": "student",
-    "courseId": "11A"
+    "courseId": "11A",
+    "courses": []
   },
   {
     "email": "juan.alfonso.est@gcrb.edu.co",
     "name": "Juan Alfonso",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "emmanuel.alvarez.est@gcrb.edu.co",
     "name": "Emmanuel Álvarez",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "darwin.bejarano.est@gcrb.edu.co",
     "name": "Darwin Bejarano",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "nicolas.bernal.est@gcrb.edu.co",
     "name": "Nicolás Bernal",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "salome.bolivar.est@gcrb.edu.co",
     "name": "Salomé Bolívar",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "nicolas.bueno.est@gcrb.edu.co",
     "name": "Nicolás Bueno",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "maria.burgos.est@gcrb.edu.co",
     "name": "María Burgos",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "david.calderon.est@gcrb.edu.co",
     "name": "David Calderón",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "isabella.carrillo.est@gcrb.edu.co",
     "name": "Isabella Carrillo",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "tomas.cubillos.est@gcrb.edu.co",
     "name": "Tomás Cubillos",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "ashley.florez.est@gcrb.edu.co",
     "name": "Ashley Flórez",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "isabelha.garcia.est@gcrb.edu.co",
     "name": "Isabelha García",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "samuel.lopez.est@gcrb.edu.co",
     "name": "Samuel López",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "laura.mantilla.est@gcrb.edu.co",
     "name": "Laura Mantilla",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "santiago.mujica.est@gcrb.edu.co",
     "name": "Santiago Mujica",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "santiago.osorio.est@gcrb.edu.co",
     "name": "Santiago Osorio",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "tomas.penuela.est@gcrb.edu.co",
     "name": "Tomás Peñuela",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "isabella.sarmiento.est@gcrb.edu.co",
     "name": "Isabella Sarmiento",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "maria.suarez.est@gcrb.edu.co",
     "name": "María Suárez",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "isabel.tijaro.est@gcrb.edu.co",
     "name": "Isabel Tijaro",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "daniel.hernandez.est@gcrb.edu.co",
     "name": "Daniel Hernández",
     "role": "student",
-    "courseId": "11B"
+    "courseId": "11B",
+    "courses": []
   },
   {
     "email": "christian.bustos.est@gcrb.edu.co",
     "name": "Christian Bustos",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "gabriela.carreno.est@gcrb.edu.co",
     "name": "Gabriela Carreño",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "nicole.catano.est@gcrb.edu.co",
     "name": "Nicole Cataño",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "andres.chavez.est@gcrb.edu.co",
     "name": "Andrés Chávez",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "luciano.cruz.est@gcrb.edu.co",
     "name": "Luciano Cruz",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "matias.duarte.est@gcrb.edu.co",
     "name": "Matías Duarte",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "juan.echeverri.est@gcrb.edu.co",
     "name": "Juan Echeverri",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "lina.fernandez.est@gcrb.edu.co",
     "name": "Lina Fernández",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "maria.franco.est@gcrb.edu.co",
     "name": "María Franco",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "jefferson.franco.est@gcrb.edu.co",
     "name": "Jefferson Franco",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "laura.gonzalez.est@gcrb.edu.co",
     "name": "Laura González",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "sara.guerrero.est@gcrb.edu.co",
     "name": "Sara Guerrero",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "valentina.luengas.est@gcrb.edu.co",
     "name": "Valentina Luengas",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "chantal.martinez.est@gcrb.edu.co",
     "name": "Chantal Martínez",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "nicolle.martinez.est@gcrb.edu.co",
     "name": "Nicolle Martínez",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "tomas.novoa.est@gcrb.edu.co",
     "name": "Tomás Novoa",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "isabella.reyes.est@gcrb.edu.co",
     "name": "Isabella Reyes",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "paula.rojas.est@gcrb.edu.co",
     "name": "Paula Rojas",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "tomas.salazar.est@gcrb.edu.co",
     "name": "Tomás Salazar",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "santiago.sanabria.est@gcrb.edu.co",
     "name": "Santiago Sanabria",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "valery.vanstrahlen.est@gcrb.edu.co",
     "name": "Válery Van Strahlen",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "daniel.ahumada.est@gcrb.edu.co",
     "name": "Daniel Ahumada",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "camilo.beltran.est@gcrb.edu.co",
     "name": "Camilo Beltrán",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "matias.chavez.est@gcrb.edu.co",
     "name": "Matías Chávez",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "martin.gonzalez.est@gcrb.edu.co",
     "name": "Martín González",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "tomas.gonzalez.est@gcrb.edu.co",
     "name": "Tomás González",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "samuel.medina.est@gcrb.edu.co",
     "name": "Samuel Medina",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "mateo.morales.est@gcrb.edu.co",
     "name": "Mateo Morales",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "michael.orjuela.est@gcrb.edu.co",
     "name": "Michael Orjuela",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "juan.perdomo.est@gcrb.edu.co",
     "name": "Juan Perdomo",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "samuel.poveda.est@gcrb.edu.co",
     "name": "Samuel Poveda",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "samuel.quinche.est@gcrb.edu.co",
     "name": "Samuel Quinche",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "silvana.rey.est@gcrb.edu.co",
     "name": "Silvana Rey",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "julian.rodriguez.est@gcrb.edu.co",
     "name": "Julián Rodríguez",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "juliana.rojas.est@gcrb.edu.co",
     "name": "Juliana Rojas",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "juanita.romero.est@gcrb.edu.co",
     "name": "Juanita Romero",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "juan.santana.est@gcrb.edu.co",
     "name": "Juan Santana",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "samuel.santos.est@gcrb.edu.co",
     "name": "Samuel Santos",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "juana.velasco.est@gcrb.edu.co",
     "name": "Juana Velasco",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "victoria.zambrano.est@gcrb.edu.co",
     "name": "Victoria Zambrano",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "isabella.munoz.est@gcrb.edu.co",
     "name": "Isabella Muñoz",
     "role": "student",
-    "courseId": "11D"
+    "courseId": "11D",
+    "courses": []
   },
   {
     "email": "maria.mejia.est@gcrb.edu.co",
     "name": "María Mejía",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   },
   {
     "email": "valeria.diaz.est@gcrb.edu.co",
     "name": "Valeria Díaz",
     "role": "student",
-    "courseId": "11C"
+    "courseId": "11C",
+    "courses": []
   }
 ]

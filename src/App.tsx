@@ -41,10 +41,11 @@ const usersDatabaseData = usersList.reduce((acc, user) => {
   acc[user.email] = {
     role: user.role as 'student' | 'representative' | 'teacher',
     courseId: user.courseId,
-    name: user.name
+    name: user.name,
+    courses: user.courses || [],
   };
   return acc;
-}, {} as Record<string, { role: 'student' | 'representative' | 'teacher'; courseId: string; name: string }>);
+}, {} as Record<string, { role: 'student' | 'representative' | 'teacher'; courseId: string; name: string; courses: string[] }>);
 
 // SVG Icons
 const CalendarIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
@@ -119,6 +120,7 @@ interface UserProfile {
   role: 'student' | 'representative' | 'teacher';
   courseId: string;
   name: string;
+  availableCourses: string[];
 }
 
 interface Task {
@@ -174,10 +176,6 @@ const pastelColors = [
   { name: 'Pastel Mint', bg: 'bg-teal-100', text: 'text-teal-800', border: 'border-teal-200' },
   { name: 'Pastel Indigo', bg: 'bg-indigo-100', text: 'text-indigo-800', border: 'border-indigo-200' },
 ];
-
-// Cursos existentes en el colegio. Los profesores dictan en varios de estos a la vez (no tienen
-// un curso propio como los representantes), así que al publicar una tarea o evento eligen a cuál va.
-const ALL_COURSES = ['9A', '9B', '9C', '9D', '10A', '10B', '10C', '11A', '11B', '11C', '11D'];
 
 // Cronograma académico 2026: cada ciclo dura 6 días de clase (no necesariamente consecutivos,
 // ya que festivos y recesos interrumpen la secuencia). Se listan las 6 fechas reales de cada
@@ -282,6 +280,7 @@ export default function App() {
   const [showCycles, setShowCycles] = useState<boolean>(() => localStorage.getItem('showCycles') === 'true');
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showCoursePicker, setShowCoursePicker] = useState(false);
   const [pickerYear, setPickerYear] = useState<number>(new Date().getFullYear());
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [schedule, setSchedule] = useState<Schedule>(initialSchedule);
@@ -309,7 +308,6 @@ export default function App() {
   const [newTaskDescription, setNewTaskDescription] = useState('');
   const [newTaskDate, setNewTaskDate] = useState(minDateStr);
   const [selectedPastelIndex, setSelectedPastelIndex] = useState(0);
-  const [postToCourseId, setPostToCourseId] = useState(ALL_COURSES[0]);
 
   const [schoolTasks, setSchoolTasks] = useState<Task[]>([]);
   const [schoolEvents, setSchoolEvents] = useState<Task[]>([]);
@@ -334,13 +332,23 @@ export default function App() {
         // Buscamos los datos correctos en el diccionario generado desde usuarios.json
         const userInfo = usersDatabaseData[user.email || ''];
         const defaultName = user.email ? user.email.split('@')[0] : 'User';
+        const availableCourses = userInfo?.courses || [];
+
+        // Los profesores no tienen un curso fijo: usamos el último que eligieron (guardado en este
+        // navegador) o, si no hay ninguno guardado, el primero de la lista de cursos que dictan.
+        let resolvedCourseId = userInfo ? userInfo.courseId : '10B';
+        if (userInfo?.role === 'teacher' && availableCourses.length > 0) {
+          const savedChoice = localStorage.getItem(`activeCourse_${user.uid}`);
+          resolvedCourseId = savedChoice && availableCourses.includes(savedChoice) ? savedChoice : availableCourses[0];
+        }
 
         const updatedProfile: UserProfile = {
           uid: user.uid,
           email: user.email || '',
           name: userInfo ? userInfo.name : defaultName,
           role: userInfo ? userInfo.role : 'student',
-          courseId: userInfo ? userInfo.courseId : '10B',
+          courseId: resolvedCourseId,
+          availableCourses,
         };
 
         // Sobrescribimos el documento para garantizar que siempre tenga la información correcta del JSON
@@ -398,6 +406,13 @@ export default function App() {
 
   const handleLogout = () => {
     signOut(auth);
+  };
+
+  const handleSwitchCourse = (newCourseId: string) => {
+    if (!userProfile || !firebaseUser) return;
+    localStorage.setItem(`activeCourse_${firebaseUser.uid}`, newCourseId);
+    setUserProfile({ ...userProfile, courseId: newCourseId });
+    setShowCoursePicker(false);
   };
 
   const fetchSchoolTasks = async () => {
@@ -533,7 +548,7 @@ export default function App() {
 
   const saveGeneralEventOverride = async () => {
     if (!editingGeneralEvent || !userProfile || userProfile.role === 'student' || !genEventTitle.trim() || !genEventStartDate) return;
-    const targetCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
+    const targetCourse = userProfile.courseId;
     const overrideId = `${targetCourse}__${editingGeneralEvent.id}`;
     const currentColor = pastelColors[genEventColorIdx];
 
@@ -559,7 +574,7 @@ export default function App() {
 
   const hideGeneralEventForCourse = async (evt: GeneralEventDefault) => {
     if (!userProfile || userProfile.role === 'student') return;
-    const targetCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
+    const targetCourse = userProfile.courseId;
     const overrideId = `${targetCourse}__${evt.id}`;
     const overrideData: GeneralEventOverride = { baseEventId: evt.id, courseId: targetCourse, deleted: true };
     try {
@@ -572,7 +587,7 @@ export default function App() {
 
   const resetGeneralEventOverride = async (evt: GeneralEventDefault) => {
     if (!userProfile || userProfile.role === 'student') return;
-    const targetCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
+    const targetCourse = userProfile.courseId;
     const overrideId = `${targetCourse}__${evt.id}`;
     try {
       await deleteDoc(doc(db, 'generalEventOverrides', overrideId));
@@ -592,7 +607,6 @@ export default function App() {
     setNewTaskDescription('');
     setNewTaskDate(minDateStr);
     setSelectedPastelIndex(0);
-    setPostToCourseId(ALL_COURSES.includes(userProfile?.courseId || '') ? userProfile!.courseId : ALL_COURSES[0]);
     setIsTaskModalOpen(true);
   };
 
@@ -601,7 +615,6 @@ export default function App() {
     setNewTaskTitle(task.title);
     setNewTaskDescription(task.description || '');
     setNewTaskDate(task.dateStr);
-    if (ALL_COURSES.includes(task.courseId)) setPostToCourseId(task.courseId);
 
     const foundIdx = pastelColors.findIndex(c => `${c.bg} ${c.text} ${c.border}` === task.color);
     setSelectedPastelIndex(foundIdx !== -1 ? foundIdx : 0);
@@ -611,9 +624,7 @@ export default function App() {
   const handleSaveItem = async (type: 'personal' | 'school' | 'event') => {
     if (!newTaskTitle.trim() || !userProfile || !firebaseUser) return;
 
-    // Los representantes (y estudiantes) publican siempre en su propio curso. Los profesores no
-    // tienen un curso fijo (dictan en varios), así que usan el que hayan elegido en el selector.
-    const activeCourse = ALL_COURSES.includes(userProfile.courseId) ? userProfile.courseId : postToCourseId;
+    const activeCourse = userProfile.courseId;
 
     const currentColor = pastelColors[selectedPastelIndex];
     const fullColorClass = `${currentColor.bg} ${currentColor.text} ${currentColor.border}`;
@@ -977,6 +988,43 @@ export default function App() {
     </div>
   );
 
+  const courseControl = (
+    <div className="relative">
+      {userProfile.role === 'teacher' && userProfile.availableCourses.length > 1 ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setShowCoursePicker(v => !v)}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition"
+            title="Switch course"
+          >
+            {userProfile.courseId}
+            <ChevronDownIcon />
+          </button>
+          {showCoursePicker && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setShowCoursePicker(false)} />
+              <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-2 z-50 w-28 max-h-64 overflow-y-auto">
+                {userProfile.availableCourses.map(c => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => handleSwitchCourse(c)}
+                    className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs font-semibold transition ${c === userProfile.courseId ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      ) : (
+        <span className="px-2.5 py-1.5 text-xs font-bold text-slate-500">{userProfile.courseId}</span>
+      )}
+    </div>
+  );
+
   const cyclesToggleControl = activeTab === 'calendar' && (
     <button
       type="button"
@@ -1024,7 +1072,8 @@ export default function App() {
             {tabsGroupControl}
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center gap-2">
+            {courseControl}
             {userMenuControl}
           </div>
         </div>
@@ -1491,16 +1540,6 @@ export default function App() {
                 <label className="text-xs font-semibold text-slate-600 block mb-1">Date</label>
                 <input type="date" value={newTaskDate} min={minDateStr} max={maxDateStr} onChange={e => setNewTaskDate(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md" />
               </div>
-              {userProfile.role === 'teacher' && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-600 block mb-1">
-                    Course <span className="text-[10px] text-slate-400 font-normal">(only used when publishing a school task/event)</span>
-                  </label>
-                  <select value={postToCourseId} onChange={e => setPostToCourseId(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md">
-                    {ALL_COURSES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-              )}
               <div>
                 <label className="text-xs font-semibold text-slate-600 block mb-2">Color Tag:</label>
                 <div className="flex flex-wrap gap-2.5">
@@ -1537,9 +1576,7 @@ export default function App() {
             <div>
               <h3 className="text-lg font-bold text-slate-800">Edit General Event</h3>
               <p className="text-xs text-slate-500 mt-1">
-                {userProfile.role === 'teacher'
-                  ? 'Changes only apply to the course selected below. Other courses keep seeing the original event.'
-                  : `Changes only apply to your course (${activeCourse}). Other courses keep seeing the original event.`}
+                Changes only apply to your course ({activeCourse}). Other courses keep seeing the original event.
               </p>
             </div>
             <div className="space-y-4">
@@ -1547,14 +1584,6 @@ export default function App() {
                 <label className="text-xs font-semibold text-slate-600 block mb-1">Title *</label>
                 <input type="text" value={genEventTitle} onChange={e => setGenEventTitle(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md" />
               </div>
-              {userProfile.role === 'teacher' && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-600 block mb-1">Course</label>
-                  <select value={postToCourseId} onChange={e => setPostToCourseId(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md">
-                    {ALL_COURSES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-              )}
               <div>
                 <label className="text-xs font-semibold text-slate-600 block mb-1">Description</label>
                 <textarea rows={2} value={genEventDescription} onChange={e => setGenEventDescription(e.target.value)} className="w-full text-sm p-2.5 bg-slate-50 border rounded-md resize-none" />
@@ -1583,7 +1612,7 @@ export default function App() {
             </div>
             <div className="flex justify-end gap-2 pt-3 border-t">
               <button type="button" onClick={() => setEditingGeneralEvent(null)} className="px-4 py-2 text-xs font-semibold text-slate-500">Cancel</button>
-              <button type="button" onClick={saveGeneralEventOverride} className="px-5 py-2 text-xs bg-indigo-600 text-white font-semibold rounded-md">{userProfile.role === 'teacher' ? 'Save for Selected Course' : 'Save for My Course'}</button>
+              <button type="button" onClick={saveGeneralEventOverride} className="px-5 py-2 text-xs bg-indigo-600 text-white font-semibold rounded-md">Save for My Course</button>
             </div>
           </div>
         </div>
