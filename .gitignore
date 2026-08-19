@@ -27,3 +27,7 @@ dist-ssr
 
 # Contiene contraseñas en texto plano - nunca debe subirse ni versionarse
 usuarios-PRIVADO-passwords-no-subir.json
+
+# Clave de administrador de Firebase (Service Account) - acceso total al proyecto, nunca subir
+*firebase-adminsdk*.json
+serviceAccountKey.json
