@@ -114,6 +114,13 @@ const PencilIcon = () => (
   </svg>
 );
 
+const InfoIcon = () => (
+  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" strokeWidth="2" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 16v-4.5M12 8.25h.01" />
+  </svg>
+);
+
 interface UserProfile {
   uid: string;
   email: string;
@@ -281,6 +288,7 @@ export default function App() {
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCoursePicker, setShowCoursePicker] = useState(false);
+  const [openInfoTip, setOpenInfoTip] = useState<string | null>(null);
   const [pickerYear, setPickerYear] = useState<number>(new Date().getFullYear());
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [schedule, setSchedule] = useState<Schedule>(initialSchedule);
@@ -902,6 +910,43 @@ export default function App() {
 
   const activeCourse = userProfile.courseId || '10B';
 
+  // Textos de ayuda de la pestaña Tasks & Events: cambian según el rol, porque
+  // los permisos sobre cada categoría son distintos para cada tipo de cuenta.
+  const courseScopeText = userProfile.role === 'teacher' ? 'el curso que tengas seleccionado arriba' : 'tu curso';
+  const sectionInfoText = {
+    personal: 'Solo vos podés ver estas tareas: son privadas y nadie más en el colegio las ve ni las puede editar.',
+    schoolTasks: userProfile.role === 'student'
+      ? 'Las publica tu profesor o representante para tu curso. Podés marcarlas como completas, pero no podés editarlas ni eliminarlas.'
+      : `Podés crear, editar y eliminar tareas para ${courseScopeText}. Los estudiantes de ese curso las verán y podrán marcarlas como completas.`,
+    schoolEvents: userProfile.role === 'student'
+      ? 'Los publica tu profesor o representante para tu curso. Solo ellos pueden crearlos, editarlos o eliminarlos.'
+      : `Podés crear, editar y eliminar eventos para ${courseScopeText}.`,
+    generalEvents: userProfile.role === 'student'
+      ? 'Los define el colegio y los ve todo el mundo. Tu profesor o representante puede personalizar cómo se muestran en tu curso.'
+      : `Estos eventos son del colegio y aparecen en todos los cursos. Si los editás o eliminás, el cambio solo afecta a cómo se ven en ${courseScopeText} — el resto sigue viendo el original.`,
+  };
+
+  const renderInfoTip = (id: string, text: string) => (
+    <div className="relative inline-flex">
+      <button
+        type="button"
+        onClick={() => setOpenInfoTip(openInfoTip === id ? null : id)}
+        className="w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-500 flex items-center justify-center transition shrink-0"
+        aria-label="More information"
+      >
+        <InfoIcon />
+      </button>
+      {openInfoTip === id && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpenInfoTip(null)} />
+          <div className="absolute top-full left-0 mt-2 bg-slate-800 text-white text-xs font-normal normal-case tracking-normal leading-snug rounded-lg shadow-xl p-3 z-50 w-60">
+            {text}
+          </div>
+        </>
+      )}
+    </div>
+  );
+
   // Eventos generales por defecto, con el override del curso aplicado (si existe) y ocultando los que el curso borró
   const displayedGeneralEvents: (GeneralEventDefault & { isOverridden: boolean })[] = DEFAULT_GENERAL_EVENTS
     .map(def => {
@@ -1266,14 +1311,16 @@ export default function App() {
           <div className="flex items-center justify-between border-b pb-4">
             <div>
               <h2 className="text-lg font-bold text-slate-800">Tasks & Events</h2>
-              <p className="text-xs text-slate-500">Your personal tasks are private. School tasks and events are visible to all students in course {activeCourse}.</p>
             </div>
             <button onClick={openCreateModal} className="w-10 h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center shadow-md transition"><PlusIcon/></button>
           </div>
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">My Personal Tasks (To-Do List)</h3>
+              <div className="flex items-center gap-1.5 mb-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">My Personal Tasks (To-Do List)</h3>
+                {renderInfoTip('personal', sectionInfoText.personal)}
+              </div>
               {personalToDos.length === 0 ? <p className="text-slate-400 text-sm py-2">No personal tasks registered.</p> : (
                 <div className="space-y-2">
                   {personalToDos.map(task => (
@@ -1297,7 +1344,10 @@ export default function App() {
             </div>
 
             <div className="border-t pt-4">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">School Tasks for Course ({activeCourse})</h3>
+              <div className="flex items-center gap-1.5 mb-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">School Tasks for Course ({activeCourse})</h3>
+                {renderInfoTip('schoolTasks', sectionInfoText.schoolTasks)}
+              </div>
               {schoolTasks.length === 0 ? <p className="text-slate-400 text-sm py-2">No school tasks published.</p> : (
                 <div className="space-y-2">
                   {schoolTasks.map(task => {
@@ -1326,7 +1376,10 @@ export default function App() {
             </div>
 
             <div className="border-t pt-4">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">School Events</h3>
+              <div className="flex items-center gap-1.5 mb-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">School Events</h3>
+                {renderInfoTip('schoolEvents', sectionInfoText.schoolEvents)}
+              </div>
               {schoolEvents.length === 0 ? <p className="text-slate-400 text-sm py-2">No school events registered.</p> : (
                 <div className="space-y-2">
                   {schoolEvents.map(event => (
@@ -1349,7 +1402,10 @@ export default function App() {
             </div>
 
             <div className="border-t pt-4">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">General School Events (all courses)</h3>
+              <div className="flex items-center gap-1.5 mb-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">General School Events (all courses)</h3>
+                {renderInfoTip('generalEvents', sectionInfoText.generalEvents)}
+              </div>
               {displayedGeneralEvents.length === 0 ? <p className="text-slate-400 text-sm py-2">No general events for your course.</p> : (
                 <div className="space-y-2">
                   {displayedGeneralEvents.map(event => (
