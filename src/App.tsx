@@ -222,10 +222,17 @@ const SUBJECT_DETAILS: Record<string, { short: string; color: string }> = {
   'Mandarin': { short: 'MN', color: 'bg-[#fb8c00]' },
   'Physics': { short: 'FIS', color: 'bg-[#546e7a]' },
   'Character Counts': { short: 'CC', color: 'bg-transparent' },
-  'Free': { short: '-', color: 'bg-transparent' },
+  'Club': { short: 'CLB', color: 'bg-transparent' },
+  'Arts': { short: 'ART', color: 'bg-transparent' },
 };
 
 const AVAILABLE_SUBJECTS = Object.keys(SUBJECT_DETAILS);
+
+// Colores sólidos reutilizados para las materias, para asignarle uno distinto
+// a cada curso en el horario personal "My Flow" de los profesores.
+const SOLID_SUBJECT_COLORS = Object.values(SUBJECT_DETAILS).map(d => d.color).filter(c => c !== 'bg-transparent');
+
+const MY_FLOW_ID = 'MyFlow';
 type Schedule = Record<number, string[]>;
 
 const initialSchedule: Schedule = {
@@ -417,7 +424,8 @@ export default function App() {
         let resolvedCourseId = userInfo ? userInfo.courseId : '10B';
         if (userInfo?.role === 'teacher' && availableCourses.length > 0) {
           const savedChoice = localStorage.getItem(`activeCourse_${user.uid}`);
-          resolvedCourseId = savedChoice && availableCourses.includes(savedChoice) ? savedChoice : availableCourses[0];
+          const savedChoiceIsValid = savedChoice && (availableCourses.includes(savedChoice) || savedChoice === MY_FLOW_ID);
+          resolvedCourseId = savedChoiceIsValid ? savedChoice! : availableCourses[0];
         }
 
         const updatedProfile: UserProfile = {
@@ -622,13 +630,17 @@ export default function App() {
   };
 
   const fetchSchedule = async () => {
-    if (!userProfile) return;
+    if (!userProfile || !firebaseUser) return;
     try {
-      const targetCourse = userProfile.courseId || '10B';
-      const docRef = doc(db, 'schedules', targetCourse);
+      const targetDocId = userProfile.courseId === MY_FLOW_ID ? `myflow_${firebaseUser.uid}` : (userProfile.courseId || '10B');
+      const docRef = doc(db, 'schedules', targetDocId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setSchedule(docSnap.data().scheduleData as Schedule);
+      } else {
+        // Sin horario guardado todavía para este curso/My Flow: arranca en blanco
+        // en vez de dejar en pantalla el horario del curso que se veía antes.
+        setSchedule({});
       }
     } catch (err) {
       console.error('Error fetching schedule:', err);
@@ -880,8 +892,9 @@ export default function App() {
   };
 
   const handleSelectSubject = async (subjectName: string) => {
-    if (!editingCell || !userProfile || !isScheduleEditMode) return;
-    if (userProfile.role !== 'representative') {
+    if (!editingCell || !userProfile || !firebaseUser || !isScheduleEditMode) return;
+    const editingMyFlow = userProfile.role === 'teacher' && userProfile.courseId === MY_FLOW_ID;
+    if (userProfile.role !== 'representative' && !editingMyFlow) {
       alert('Only representatives are allowed to edit the class schedule.');
       setEditingCell(null);
       return;
@@ -893,8 +906,8 @@ export default function App() {
     updatedSchedule[dayNum][hourIdx] = subjectName;
 
     try {
-      const targetCourse = userProfile.courseId || '10B';
-      await setDoc(doc(db, 'schedules', targetCourse), { scheduleData: updatedSchedule });
+      const targetDocId = editingMyFlow ? `myflow_${firebaseUser.uid}` : (userProfile.courseId || '10B');
+      await setDoc(doc(db, 'schedules', targetDocId), { scheduleData: updatedSchedule });
       setSchedule(updatedSchedule);
       setEditingCell(null);
     } catch (err) {
@@ -935,16 +948,16 @@ export default function App() {
     let h = 0;
 
     while (h < 7) {
-      const currentSubject = dayClasses[h] || 'Free';
+      const currentSubject = dayClasses[h] || '';
       const nextSubject = h < 6 ? dayClasses[h + 1] : null;
-      const isDouble = currentSubject !== 'Free' && currentSubject === nextSubject;
-      const details = SUBJECT_DETAILS[currentSubject] || { short: currentSubject, color: 'bg-slate-400' };
+      const isDouble = currentSubject !== '' && currentSubject === nextSubject;
+      const details = (currentSubject && activeSubjectDetails[currentSubject]) || emptyCellDetails;
       const startHourIdx = h;
 
       if (isDouble) {
         renderElements.push(
           <div key={`readonly-${schoolDayNum}-${startHourIdx}`} className="bg-white relative h-[129px] border-b border-slate-800 last:border-b-0 overflow-hidden">
-            {currentSubject !== 'Free' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color} z-10 pointer-events-none`} />}
+            {currentSubject !== '' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color} z-10 pointer-events-none`} />}
             <div className="absolute inset-0 flex items-center justify-center pl-4 pointer-events-none z-10">
               <span className="font-normal text-2xl md:text-3xl text-slate-900 tracking-tight text-center">{details.short}</span>
             </div>
@@ -954,7 +967,7 @@ export default function App() {
       } else {
         renderElements.push(
           <div key={`readonly-${schoolDayNum}-${startHourIdx}`} className="bg-white relative h-[64px] p-2 flex items-center justify-center border-b border-slate-800 last:border-b-0">
-            {currentSubject !== 'Free' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color}`} />}
+            {currentSubject !== '' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color}`} />}
             <span className="font-normal text-2xl md:text-3xl text-slate-900 tracking-tight text-center pl-4">{details.short}</span>
           </div>
         );
@@ -1057,6 +1070,22 @@ export default function App() {
   }
 
   const activeCourse = userProfile.courseId || '10B';
+  const isMyFlow = userProfile.role === 'teacher' && activeCourse === MY_FLOW_ID;
+
+  // "My Flow" es el espacio personal de organización de cada profesor: en vez
+  // de materias, las opciones del horario son los cursos que dicta (con un
+  // color distinto por curso, igual de estilo que las materias) más "Free" y
+  // "Club" para los espacios libres.
+  const myFlowSubjectDetails: Record<string, { short: string; color: string }> = {};
+  userProfile.availableCourses.forEach((c, idx) => {
+    myFlowSubjectDetails[c] = { short: c, color: SOLID_SUBJECT_COLORS[idx % SOLID_SUBJECT_COLORS.length] };
+  });
+  myFlowSubjectDetails['Free'] = { short: '-', color: 'bg-transparent' };
+  myFlowSubjectDetails['Club'] = { short: 'CLB', color: 'bg-transparent' };
+
+  const activeSubjectDetails = isMyFlow ? myFlowSubjectDetails : SUBJECT_DETAILS;
+  const activeSubjectList = Object.keys(activeSubjectDetails);
+  const emptyCellDetails = { short: '', color: 'bg-transparent' };
 
   // Help text for the Tasks & Events tab: it changes based on role, since
   // permissions for each category differ between account types.
@@ -1171,7 +1200,7 @@ export default function App() {
 
   const courseControl = (
     <div className="relative">
-      {userProfile.role === 'teacher' && userProfile.availableCourses.length > 1 ? (
+      {userProfile.role === 'teacher' ? (
         <>
           <button
             type="button"
@@ -1179,13 +1208,13 @@ export default function App() {
             className="flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition"
             title="Switch course"
           >
-            {userProfile.courseId}
+            {isMyFlow ? 'My Flow' : userProfile.courseId}
             <ChevronDownIcon />
           </button>
           {showCoursePicker && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setShowCoursePicker(false)} />
-              <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-2 z-50 w-28 max-h-64 overflow-y-auto">
+              <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-2 z-50 w-32 max-h-64 overflow-y-auto">
                 {userProfile.availableCourses.map(c => (
                   <button
                     key={c}
@@ -1196,6 +1225,14 @@ export default function App() {
                     {c}
                   </button>
                 ))}
+                <div className="my-1 border-t border-slate-100" />
+                <button
+                  type="button"
+                  onClick={() => handleSwitchCourse(MY_FLOW_ID)}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs font-semibold transition ${isMyFlow ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+                >
+                  My Flow
+                </button>
               </div>
             </>
           )}
@@ -1479,6 +1516,8 @@ export default function App() {
               )}
             </div>
 
+            {!isMyFlow && (
+            <>
             <div className="border-t pt-4">
               <div className="flex items-center gap-1.5 mb-3">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">School Tasks for Course ({activeCourse})</h3>
@@ -1574,6 +1613,8 @@ export default function App() {
                 </div>
               )}
             </div>
+            </>
+            )}
           </div>
         </div>
       )}
@@ -1583,18 +1624,20 @@ export default function App() {
         <div className="max-w-5xl mx-auto bg-transparent md:bg-white p-0 md:p-8 rounded-none md:rounded-xl border-0 md:border md:border-slate-200 shadow-none md:shadow-sm space-y-6">
           <div className="flex items-center justify-between border-b pb-4">
             <div>
-              <h2 className="text-xl font-bold text-slate-900">Schedule Template ({activeCourse})</h2>
+              <h2 className="text-xl font-bold text-slate-900">{isMyFlow ? 'My Flow' : `Schedule Template (${activeCourse})`}</h2>
               <p className="text-xs text-slate-500 mt-1">
-                {userProfile.role === 'representative'
+                {userProfile.role === 'representative' || isMyFlow
                   ? isScheduleEditMode
                     ? 'Editing mode active: Click on any cell to change subjects.'
-                    : 'Click the pencil icon on the right to enable editing.'
+                    : isMyFlow
+                      ? 'Your personal schedule — click the pencil icon to organize it however you like.'
+                      : 'Click the pencil icon on the right to enable editing.'
                   : 'Static view of your course schedule.'}
               </p>
             </div>
 
-            {/* BOTONES DE EDICIÓN SOLO PARA REPRESENTANTES */}
-            {userProfile.role === 'representative' && (
+            {/* BOTONES DE EDICIÓN PARA REPRESENTANTES (horario del curso) Y PROFESORES (My Flow) */}
+            {(userProfile.role === 'representative' || isMyFlow) && (
               <div className="flex items-center gap-2">
                 {isScheduleEditMode && (
                   <button
@@ -1636,10 +1679,10 @@ export default function App() {
                     let h = 0;
 
                     while (h < 7) {
-                      const currentSubject = dayClasses[h] || 'Free';
+                      const currentSubject = dayClasses[h] || '';
                       const nextSubject = h < 6 ? dayClasses[h + 1] : null;
-                      const isDouble = currentSubject !== 'Free' && currentSubject === nextSubject;
-                      const details = SUBJECT_DETAILS[currentSubject] || { short: currentSubject, color: 'bg-slate-400' };
+                      const isDouble = currentSubject !== '' && currentSubject === nextSubject;
+                      const details = (currentSubject && activeSubjectDetails[currentSubject]) || emptyCellDetails;
                       const startHourIdx = h;
                       const isHovered = hoveredCell?.dayNum === dayNum && hoveredCell?.hourIdx === startHourIdx;
 
@@ -1651,7 +1694,7 @@ export default function App() {
                             onMouseLeave={() => setHoveredCell(null)}
                             className="bg-white relative h-[129px] border-b border-slate-800 overflow-hidden"
                           >
-                            {currentSubject !== 'Free' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color} z-10 pointer-events-none`} />}
+                            {currentSubject !== '' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color} z-10 pointer-events-none`} />}
                             <div className="absolute inset-0 flex items-center justify-center pl-4 pointer-events-none z-10">
                               <span className="font-normal text-2xl md:text-3xl text-slate-900 tracking-tight text-center">{details.short}</span>
                             </div>
@@ -1674,7 +1717,7 @@ export default function App() {
                             onClick={() => isScheduleEditMode && setEditingCell({ dayNum, hourIdx: startHourIdx })}
                             className={`bg-white relative h-[64px] p-2 flex items-center justify-center transition border-b border-slate-800 ${isScheduleEditMode ? 'cursor-pointer hover:bg-indigo-50/50' : ''}`}
                           >
-                            {currentSubject !== 'Free' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color}`} />}
+                            {currentSubject !== '' && <div className={`absolute left-0 top-0 bottom-0 w-6 ${details.color}`} />}
                             <span className="font-normal text-2xl md:text-3xl text-slate-900 tracking-tight text-center pl-4">{details.short}</span>
                           </div>
                         );
@@ -1694,10 +1737,10 @@ export default function App() {
       {editingCell && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full border border-slate-200 shadow-2xl space-y-4">
-            <h3 className="text-base font-bold text-slate-800 border-b pb-2">Select Subject (Day {editingCell.dayNum} - Hour {editingCell.hourIdx + 1})</h3>
+            <h3 className="text-base font-bold text-slate-800 border-b pb-2">{isMyFlow ? 'Select Course' : 'Select Subject'} (Day {editingCell.dayNum} - Hour {editingCell.hourIdx + 1})</h3>
             <div className="grid grid-cols-1 gap-1.5 max-h-72 overflow-y-auto pr-1">
-              {AVAILABLE_SUBJECTS.map((subj, idx) => {
-                const details = SUBJECT_DETAILS[subj];
+              {activeSubjectList.map((subj, idx) => {
+                const details = activeSubjectDetails[subj];
                 return (
                   <button key={idx} onClick={() => handleSelectSubject(subj)} className="flex items-center gap-3 p-2.5 rounded-md border border-slate-100 bg-slate-50 hover:bg-indigo-50 transition text-left group">
                     <div className={`w-3.5 h-6 rounded ${details.color} shrink-0`} />
@@ -1748,7 +1791,7 @@ export default function App() {
               <button type="button" onClick={() => setIsTaskModalOpen(false)} className="px-4 py-2 text-xs font-semibold text-slate-500">Cancel</button>
               {editingTask ? (
                 <button type="button" onClick={() => handleSaveItem(editingTask.isEvent ? 'event' : editingTask.isPersonal ? 'personal' : 'school')} className="px-5 py-2 text-xs bg-indigo-600 text-white font-semibold rounded-md">Save Changes</button>
-              ) : userProfile.role !== 'student' ? (
+              ) : userProfile.role !== 'student' && !isMyFlow ? (
                 <div className="flex gap-2">
                   <button type="button" onClick={() => handleSaveItem('personal')} className="px-3 py-2 text-xs bg-slate-800 text-white font-semibold rounded-md">Save Personal</button>
                   <button type="button" onClick={() => handleSaveItem('school')} className="px-3 py-2 text-xs bg-indigo-600 text-white font-semibold rounded-md">Publish Task</button>

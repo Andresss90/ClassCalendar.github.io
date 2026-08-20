@@ -27,10 +27,12 @@ service cloud.firestore {
       allow write: if isTeacherOrRepresentative();
     }
 
-    // Solo los representantes pueden editar el horario de clases
+    // Los representantes editan el horario del curso. Los profesores solo pueden
+    // escribir su propio horario personal "My Flow" (documento myflow_{su uid}).
     match /schedules/{courseId} {
       allow read: if request.auth != null;
-      allow write: if isRepresentative();
+      allow write: if isRepresentative()
+        || (request.auth != null && myRole() == 'teacher' && courseId == 'myflow_' + request.auth.uid);
     }
 
     // Regla para overrides de eventos generales (Semana Santa, Día de la Familia, etc.) por curso
