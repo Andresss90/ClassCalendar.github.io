@@ -6,8 +6,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
   // El base path solo aplica al build de producción (GitHub Pages sirve la app
-  // en /ClassCalendar.github.io/); en desarrollo local debe seguir siendo la raíz.
-  base: command === 'build' ? '/ClassCalendar.github.io/' : '/',
+  // en /StudyFlow/); en desarrollo local debe seguir siendo la raíz.
+  base: command === 'build' ? '/StudyFlow/' : '/',
   plugins: [
     react(),
     tailwindcss(),
