@@ -1021,7 +1021,7 @@ export default function App() {
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-lg border border-slate-200 max-w-md w-full p-6 space-y-6">
           <div className="text-center space-y-1">
-            <h2 className="text-2xl font-black text-slate-900">Class Calendar App</h2>
+            <h2 className="text-2xl font-black text-slate-900">StudyFlow</h2>
             <p className="text-xs text-slate-500">Sign in with your institutional credentials</p>
           </div>
 

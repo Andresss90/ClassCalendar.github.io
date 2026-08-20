@@ -19,9 +19,9 @@ export default defineConfig(({ command }) => ({
       injectRegister: 'auto',
       includeAssets: ['icons/favicon-32.png'],
       manifest: {
-        name: 'Mi Colegio - Calendario',
-        short_name: 'Mi Colegio',
-        description: 'Calendario, tareas y horario del colegio.',
+        name: 'StudyFlow',
+        short_name: 'StudyFlow',
+        description: 'Calendar, tasks, and schedule for your school.',
         start_url: '.',
         scope: '.',
         display: 'standalone',
