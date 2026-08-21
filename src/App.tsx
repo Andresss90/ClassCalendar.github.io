@@ -68,6 +68,12 @@ const ClockIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
   </svg>
 );
 
+const RefreshIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+  </svg>
+);
+
 const ChevronLeftIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -360,6 +366,11 @@ export default function App() {
   const [newPasswordInput, setNewPasswordInput] = useState('');
   const [resetError, setResetError] = useState('');
 
+  // Refresco manual/automático de datos, y aviso de nueva versión disponible
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const swRegistrationRef = useRef<ServiceWorkerRegistration | null>(null);
+
   const [activeTab, setActiveTab] = useState<'calendar' | 'tasks' | 'schedule'>('calendar');
   const [showCycles, setShowCycles] = useState<boolean>(() => localStorage.getItem('showCycles') === 'true');
   const [showMonthPicker, setShowMonthPicker] = useState(false);
@@ -459,6 +470,81 @@ export default function App() {
       fetchGeneralEventOverrides();
     }
   }, [userProfile, firebaseUser]);
+
+  // Refresca los datos solo cuando la pestaña/app vuelve a primer plano (no en
+  // cada parpadeo de visibilidad), para que quien deja la app abierta en
+  // segundo plano (típico en iOS, que nunca la "cierra" del todo) igual vea
+  // las tareas/eventos nuevos sin tener que cerrarla y volver a abrirla.
+  useEffect(() => {
+    if (!userProfile || !firebaseUser) return;
+    let lastRefresh = Date.now();
+
+    const handleResume = () => {
+      if (document.visibilityState !== 'visible') return;
+      if (Date.now() - lastRefresh < 15000) return;
+      lastRefresh = Date.now();
+      fetchSchoolTasks();
+      fetchSchoolEvents();
+      fetchPersonalToDos();
+      fetchCompletedSchoolTasks();
+      fetchSchedule();
+      fetchGeneralEventOverrides();
+      swRegistrationRef.current?.update();
+    };
+
+    document.addEventListener('visibilitychange', handleResume);
+    window.addEventListener('focus', handleResume);
+    return () => {
+      document.removeEventListener('visibilitychange', handleResume);
+      window.removeEventListener('focus', handleResume);
+    };
+  }, [userProfile, firebaseUser]);
+
+  const handleManualRefresh = async () => {
+    if (!userProfile || !firebaseUser || isRefreshing) return;
+    setIsRefreshing(true);
+    try {
+      await Promise.all([
+        fetchSchoolTasks(),
+        fetchSchoolEvents(),
+        fetchPersonalToDos(),
+        fetchCompletedSchoolTasks(),
+        fetchSchedule(),
+        fetchGeneralEventOverrides(),
+      ]);
+      swRegistrationRef.current?.update();
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Detecta cuando hay una versión nueva de la app lista (el service worker
+  // nuevo terminó de instalar y está "esperando"), para poder ofrecer
+  // aplicarla ya mismo en vez de depender de que cierren la app del todo.
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (!reg) return;
+      swRegistrationRef.current = reg;
+      if (reg.waiting && navigator.serviceWorker.controller) setUpdateAvailable(true);
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            setUpdateAvailable(true);
+          }
+        });
+      });
+    });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+  }, []);
+
+  const applyUpdate = () => {
+    swRegistrationRef.current?.waiting?.postMessage({ type: 'SKIP_WAITING' });
+  };
 
   useEffect(() => {
     localStorage.setItem('showCycles', String(showCycles));
@@ -1276,6 +1362,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8 pt-[calc(1.25rem+env(safe-area-inset-top))] md:pt-8">
+      {updateAvailable && (
+        <div className="fixed bottom-4 inset-x-4 md:inset-x-auto md:right-6 md:left-auto md:w-80 bg-slate-900 text-white rounded-lg shadow-2xl p-4 z-[60] flex items-center justify-between gap-3">
+          <span className="text-sm font-semibold">A new version is ready.</span>
+          <button
+            type="button"
+            onClick={applyUpdate}
+            className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-md transition shrink-0"
+          >
+            Update now
+          </button>
+        </div>
+      )}
       <header className="max-w-7xl mx-auto mb-6 bg-white p-4 md:p-5 rounded-lg border border-slate-200 shadow-sm">
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
           <div className="flex justify-start">
@@ -1291,6 +1389,16 @@ export default function App() {
           </div>
 
           <div className="flex justify-end items-center gap-2">
+            <button
+              type="button"
+              onClick={handleManualRefresh}
+              disabled={isRefreshing}
+              title="Refresh data"
+              aria-label="Refresh data"
+              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition shrink-0 disabled:opacity-60"
+            >
+              <RefreshIcon className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
             {courseControl}
             {userMenuControl}
           </div>
