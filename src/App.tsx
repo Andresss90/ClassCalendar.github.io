@@ -351,6 +351,13 @@ const DEFAULT_GENERAL_EVENTS: GeneralEventDefault[] = [
 const eventCoversDate = (ev: { dateStr: string; endDateStr?: string | null }, dateStr: string) =>
   dateStr >= ev.dateStr && dateStr <= (ev.endDateStr || ev.dateStr);
 
+// Formatea una fecha como YYYY-MM-DD usando la hora LOCAL del dispositivo.
+// No usar toISOString() para esto: convierte a UTC primero, así que en zonas
+// horarias detrás de UTC (como Colombia, UTC-5) ya marca el día siguiente
+// desde las 7pm hora local en adelante.
+const formatLocalDate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 export default function App() {
   const [firebaseUser, setFirebaseUser] = useState<any>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -388,8 +395,10 @@ export default function App() {
   const today = new Date();
   const maxDateObj = new Date();
   maxDateObj.setFullYear(today.getFullYear() + 2);
-  const minDateStr = today.toISOString().split('T')[0];
-  const maxDateStr = maxDateObj.toISOString().split('T')[0];
+  const minDateStr = formatLocalDate(today);
+  const maxDateStr = formatLocalDate(maxDateObj);
+  const minPickerYear = today.getFullYear() - 2;
+  const maxPickerYear = today.getFullYear() + 2;
 
   const [selectedDayDetails, setSelectedDayDetails] = useState<{
     dateStr: string;
@@ -1242,9 +1251,23 @@ export default function App() {
           <div className="fixed inset-0 z-40" onClick={() => setShowMonthPicker(false)} />
           <div className="absolute top-full left-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-3 z-50 w-64">
             <div className="flex items-center justify-between mb-2">
-              <button type="button" onClick={() => setPickerYear(y => y - 1)} className="p-1 hover:bg-slate-100 rounded text-slate-600"><ChevronLeftIcon /></button>
+              <button
+                type="button"
+                onClick={() => setPickerYear(y => Math.max(minPickerYear, y - 1))}
+                disabled={pickerYear <= minPickerYear}
+                className="p-1 hover:bg-slate-100 rounded text-slate-600 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+              >
+                <ChevronLeftIcon />
+              </button>
               <span className="text-sm font-bold text-slate-800">{pickerYear}</span>
-              <button type="button" onClick={() => setPickerYear(y => y + 1)} className="p-1 hover:bg-slate-100 rounded text-slate-600"><ChevronRightIcon /></button>
+              <button
+                type="button"
+                onClick={() => setPickerYear(y => Math.min(maxPickerYear, y + 1))}
+                disabled={pickerYear >= maxPickerYear}
+                className="p-1 hover:bg-slate-100 rounded text-slate-600 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+              >
+                <ChevronRightIcon />
+              </button>
             </div>
             <div className="grid grid-cols-3 gap-1.5">
               {Array.from({ length: 12 }).map((_, idx) => {
@@ -1528,7 +1551,7 @@ export default function App() {
                     ...dayPersonalTasks.map(t => ({ ...t, isDone: t.completed }))
                   ];
 
-                  const todayStr = new Date().toISOString().split('T')[0];
+                  const todayStr = formatLocalDate(new Date());
                   const isToday = formattedDateStr === todayStr;
                   const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
 
