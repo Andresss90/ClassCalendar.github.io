@@ -512,7 +512,15 @@ export default function App() {
         fetchSchedule(),
         fetchGeneralEventOverrides(),
       ]);
-      swRegistrationRef.current?.update();
+      // Además de traer datos frescos, chequea si hay una versión nueva de la
+      // app lista y, si la hay, la aplica ya mismo (recarga sola).
+      const reg = swRegistrationRef.current;
+      if (reg) {
+        await reg.update();
+        if (reg.waiting) {
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+      }
     } finally {
       setIsRefreshing(false);
     }
@@ -1273,9 +1281,21 @@ export default function App() {
         <>
           <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
           <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl p-4 z-50 w-56">
-            <div className="mb-3">
-              <span className="text-sm font-bold block text-slate-800">{userProfile.name} ({activeCourse})</span>
-              <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{userProfile.role}</span>
+            <div className="mb-5 flex items-start justify-between gap-2">
+              <div>
+                <span className="text-sm font-bold block text-slate-800">{userProfile.name} ({activeCourse})</span>
+                <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{userProfile.role}</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleManualRefresh}
+                disabled={isRefreshing}
+                title="Refresh data and check for updates"
+                aria-label="Refresh data and check for updates"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition shrink-0 disabled:opacity-60"
+              >
+                <RefreshIcon className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+              </button>
             </div>
             <button onClick={handleLogout} className="w-full px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-md transition">Sign Out</button>
           </div>
@@ -1389,16 +1409,6 @@ export default function App() {
           </div>
 
           <div className="flex justify-end items-center gap-2">
-            <button
-              type="button"
-              onClick={handleManualRefresh}
-              disabled={isRefreshing}
-              title="Refresh data"
-              aria-label="Refresh data"
-              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition shrink-0 disabled:opacity-60"
-            >
-              <RefreshIcon className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            </button>
             {courseControl}
             {userMenuControl}
           </div>
